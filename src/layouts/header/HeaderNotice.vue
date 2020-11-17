@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { request, METHOD } from "@/utils/request";
+import { get_headernotice, read_notice, getad } from "@/services/headerNotice";
 export default {
   name: "HeaderNotice",
   data() {
@@ -108,7 +108,7 @@ export default {
   },
   beforeMount() {
     //组件渲染前获取数据
-    request("http://localhost:3000/headernotice", METHOD.GET)
+    get_headernotice()
       .then((result) => {
         this.msg_count = result.data.count;
         this.unreaded_count = result.data.unreaded_count;
@@ -134,14 +134,14 @@ export default {
     //读取消息后的动作 按下消息后按钮的动作
     readNotice(msg, index) {
       if (msg.type != "notice") {
-        request("http://localhost:3000/headernotice/readnotice", METHOD.POST, {
+        read_notice({
           index: msg.msg_id,
         });
         this.msg_data.splice(index, 1);
         this.unreaded_count--;
       }
       if (msg.type == "notice") {
-        request("http://localhost:3000/headernotice/getad", METHOD.POST, {
+        getad({
           index: msg.msg_id,
         })
           .then((result) => {
