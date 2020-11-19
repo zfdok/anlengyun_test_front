@@ -2,7 +2,7 @@
   <common-layout>
     <div class="top">
       <div class="header">
-        <img alt="logo" class="logo" src="@/assets/img/logo.png" />
+        <img alt="logo" class="logo" src="http://img.anlengyun.top/logo.png" />
         <span class="title">{{systemName}}</span>
       </div>
       <div class="desc">安冷云·智慧冷链创新者</div>

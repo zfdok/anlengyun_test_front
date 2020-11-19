@@ -8,19 +8,34 @@
 </template>
 
 <script>
-import { request, METHOD } from "@/utils/request";
+// import axios from "axios";
 
 export default {
   data() {
     return {
       rev_data: "收到的响应",
+      onenet_token:
+        "version=2020-05-29&res=userid%2F163120&et=1634629884&method=sha1&sign=g6oXn%2B6R%2BYl8aDEqwfrAwSktaTk%3D",
     };
   },
   methods: {
     btn1() {
       console.log("haha");
-      //http://www.anlengyun.top:3000/string
-      request("http://www.anlengyun.top:3000/string", METHOD.GET)
+      this.$axios
+        .get(
+          "https://openapi.heclouds.com/",
+          {
+            action: "QueryStatistics",
+            version: "1",
+            project_id: "Sd5MPm",
+          },
+          {
+            headers: {
+              token: "Bearer ",
+              Authorization: this.onenet_token,
+            },
+          }
+        )
         .then((result) => {
           console.log(result);
           this.rev_data = result.data;

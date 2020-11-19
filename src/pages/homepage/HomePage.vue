@@ -13,7 +13,7 @@
         <a-row>
           <a-col :span="2">
             <img
-              src="../../assets/img/anlengLogo.png"
+              src="http://img.anlengyun.top/anlengLogo.png"
               style="height: 2rem; margin-left: 1rem"
             />
           </a-col>
@@ -42,18 +42,20 @@
           <video
             :style="fixStyle"
             :autoplay="true"
+            :muted="true"
             loop
             class="fillWidth"
             v-on:canplay="canplay"
           >
-            <!-- <source src="../../assets/img/headvideo3.mp4" type="video/mp4" />
-            浏览器不支持 video 标签，建议升级浏览器。 -->
-            <source src="../../assets/img/headvideo.webm" type="video/webm" />
+            <source
+              src="http://img.anlengyun.top/headvideo.webm"
+              type="video/webm"
+            />
             浏览器不支持 video 标签，建议升级浏览器。
           </video>
-          <div class="poster hidden" v-if="!vedioCanPlay">
-            <img :style="fixStyle" src="../../assets/img/backSVG.svg" alt="" />
-          </div>
+          <!-- <div class="poster hidden" v-if="!vedioCanPlay">
+            <img :style="fixStyle" src="../..//backSVG.svg" alt="" />
+          </div> -->
           <h2 :style="descStyle">安冷云 · 智慧冷链创新者</h2>
         </div>
       </div>
@@ -76,7 +78,7 @@
         <a-row>
           <a-col :span="3" style="height: 100%">
             <img
-              src="../../assets/img/anlengLogo_white.png"
+              src="http://img.anlengyun.top/anlengLogo_white.png"
               class="footter_img"
             />
           </a-col>
@@ -88,7 +90,10 @@
             ></div>
           </a-col>
           <a-col :span="2" style="height: 100%; text-align: center">
-            <img src="../../assets/img/al_site.png" class="footter_img_ewm" />
+            <img
+              src="http://img.anlengyun.top/al_site.png"
+              class="footter_img_ewm"
+            />
             <p
               style="
                 font-size: 0.9rem;
@@ -103,7 +108,10 @@
             </p>
           </a-col>
           <a-col :span="2" style="height: 100%; text-align: center">
-            <img src="../../assets/img/weixingzh.png" class="footter_img_ewm" />
+            <img
+              src="http://img.anlengyun.top/weixingzh.png"
+              class="footter_img_ewm"
+            />
             <p
               style="
                 font-size: 0.9rem;
@@ -148,7 +156,7 @@ export default {
       if (windowAspectRatio < 0.5625) {
         videoWidth = windowWidth;
         videoHeight = videoWidth * 0.5625;
-        fontsize = windowHeight / 150;
+        fontsize = windowHeight / 180;
         this.fixStyle = {
           height: windowWidth * 0.5625 + "px",
           width: windowWidth + "px",
@@ -159,9 +167,11 @@ export default {
           "font-size": fontsize + "rem",
           position: "absolute",
           color: "#ffffff",
-          left: "20%",
-          right: "20%",
+          left: "10%",
+          right: "10%",
+          "text-align": "center",
           top: "30%",
+          "font-weight": "bold",
         };
       } else {
         videoHeight = windowHeight;
@@ -174,13 +184,14 @@ export default {
           "margin-bottom": "initial",
         };
         this.descStyle = {
-          "text-align": "center",
           "font-size": fontsize + "rem",
           position: "absolute",
           color: "#ffffff",
-          left: "20%",
-          right: "20%",
+          left: "10%",
+          right: "10%",
+          "text-align": "center",
           top: "30%",
+          "font-weight": "bold",
         };
       }
     };
@@ -277,7 +288,7 @@ a:hover {
 }
 .footer {
   height: 15rem;
-  background-image: url("https://s2.ax1x.com/2019/05/23/VPSS3D.jpg");
+  background-image: url("http://img.anlengyun.top/footer_back_img.jpg");
 }
 .footter_img {
   opacity: 0.7;

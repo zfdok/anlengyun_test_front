@@ -25,7 +25,7 @@ export default {
   height: 100vh;
   overflow: auto;
   background-color: @layout-body-background;
-  background-image: url('../assets/img/backSVG.svg');
+  background-image: url('http://img.anlengyun.top/backSVG.svg');
   background-repeat: repeat;
   background-position-x: center;
   // background-position-y: 110px;
