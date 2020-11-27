@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     user_center() {
-      this.$router.push("/demo");
+      this.$router.push("/mainpage");
     },
     logout() {
       logout();

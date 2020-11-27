@@ -91,6 +91,4 @@ export default {
 body {
   background-image: url("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1605508829836&di=ea4c2e4fce69937084efedb9cc50e5c9&imgtype=0&src=http%3A%2F%2Fa4.att.hudong.com%2F27%2F67%2F01300000921826141299672233506.jpg");
 }
-#id {
-}
 </style>

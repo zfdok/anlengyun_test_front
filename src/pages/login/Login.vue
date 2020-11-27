@@ -117,7 +117,7 @@ export default {
         getRoutesConfig().then(result => {
           const routesConfig = result.data.data //8. 获取获取路由请求的返回值
           loadRoutes(routesConfig) //9. 设置路由
-          this.$router.push('/demo') //10. 路由跳转到/demo
+          this.$router.push('/mainpage') //10. 路由跳转到/mainpage
           this.$message.success(loginRes.message, 3) //11. 跳出消息,显示登录成功
         })
       } else {

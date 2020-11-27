@@ -4,7 +4,7 @@
       <!-- 手机界面的顶栏 -->
       <router-link
         v-if="isMobile || layout === 'head'"
-        to="/demo"
+        to="/mainpage"
         :class="['logo', isMobile ? null : 'pc', headerTheme]"
       >
         <img width="32" src="http://img.anlengyun.top/logo.png" />

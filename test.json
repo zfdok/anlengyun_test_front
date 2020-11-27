@@ -1,31 +1,48 @@
 {
-  "statusCode": 200,
-  "body": "{\"data\":{\"activate_count\":727,\"created_time\":\"2020-10-19T07:21:27.988Z\",\"device_count\":5911,\"group_id\":\"HkhwSb\",\"key\":\"MjE5OWIwYzJmZGU5ZDVmMjY1NTQyNmY4ZjM5M2ZjMjY=\",\"name\":\"客户1的设备\",\"online_count\":61,\"project_id\":\"Sd5MPm\"},\"requestId\":\"a513132edeea428b8c4581d4682fd20e\",\"success\":true}",
-  "headers": {
-    "content-length": "294",
-    "content-type": "application/json; charset=utf-8",
-    "date": "Fri, 20 Nov 2020 03:22:01 GMT",
-    "x-readtime": "55",
-    "connection": "close"
+  "data": {
+    "list": [
+      {
+        "created_time": "2020-11-24T05:49:34.150Z",
+        "device_name": "al_kh00001_zx_0003",
+        "from": 1,
+        "gid": "AYqdps",
+        "group_name": "客户00001",
+        "idid": "2177366",
+        "last_time": "0001-01-01T00:00:00.000Z",
+        "node_type": 1,
+        "product_id": "4LwKzUwOpX",
+        "product_name": "在线温湿度监测仪",
+        "status": 1
+      },
+      {
+        "created_time": "2020-11-24T05:49:14.777Z",
+        "device_name": "al_kh00001_zx_0002",
+        "from": 1,
+        "gid": "AYqdps",
+        "group_name": "客户00001",
+        "idid": "2177365",
+        "last_time": "0001-01-01T00:00:00.000Z",
+        "node_type": 1,
+        "product_id": "4LwKzUwOpX",
+        "product_name": "在线温湿度监测仪",
+        "status": 1
+      },
+      {
+        "created_time": "2020-11-24T05:49:00.949Z",
+        "device_name": "al_kh00001_zx_0001",
+        "from": 1,
+        "gid": "AYqdps",
+        "group_name": "客户00001",
+        "idid": "2177363",
+        "last_time": "2020-11-24T07:34:45.883Z",
+        "node_type": 1,
+        "product_id": "4LwKzUwOpX",
+        "product_name": "在线温湿度监测仪",
+        "status": 3
+      }
+    ],
+    "meta": { "limit": 100, "offset": 0, "total": 3 }
   },
-  "request": {
-    "uri": {
-      "protocol": "http:",
-      "slashes": true,
-      "auth": null,
-      "host": "openapi.heclouds.com",
-      "port": null,
-      "hostname": "openapi.heclouds.com",
-      "hash": null,
-      "search": "?action=QueryGroupDetail&version=1&project_id=Sd5MPm&group_id=HkhwSb",
-      "query": "action=QueryGroupDetail&version=1&project_id=Sd5MPm&group_id=HkhwSb",
-      "pathname": "/application",
-      "path": "/application?action=QueryGroupDetail&version=1&project_id=Sd5MPm&group_id=HkhwSb",
-      "href": "http://openapi.heclouds.com/application?action=QueryGroupDetail&version=1&project_id=Sd5MPm&group_id=HkhwSb"
-    },
-    "method": "GET",
-    "headers": {
-      "Authorization": "version=2020-05-29&res=userid%2F163120&et=1763514709&method=sha1&sign=ftEhYGS5HqfRd7ubdLJ5JQGizkY%3D"
-    }
-  }
+  "requestId": "829d28e77aab4eecadde661510cb9f2b",
+  "success": true
 }

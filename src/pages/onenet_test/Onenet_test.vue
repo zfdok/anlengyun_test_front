@@ -1,7 +1,6 @@
 <template>
   <div>
     <a-button-group>
-      <a-button type="primary" @click="btn1">测试链接</a-button>
       <a-button type="primary" @click="btn2">获取项目概况</a-button>
       <a-button type="primary" @click="btn_onenet_get_user_project_info"
         >获取用户的项目概况</a-button
@@ -16,7 +15,6 @@
 <script>
 import { mapGetters } from "vuex";
 import {
-  onenet_get_test,
   onenet_get_project_info,
   onenet_get_user_project_info,
 } from "@/services/onenet";
@@ -32,15 +30,6 @@ export default {
     ...mapGetters("account", ["user"]),
   },
   methods: {
-    btn1() {
-      onenet_get_test({})
-        .then((result) => {
-          this.rev_data = result.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
     btn2() {
       onenet_get_project_info()
         .then((result) => {

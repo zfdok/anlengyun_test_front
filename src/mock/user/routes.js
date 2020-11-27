@@ -31,7 +31,7 @@ Mock.mock(`${process.env.VUE_APP_API_BASE_URL}/routes`, 'get', () => {
       {
         router: 'demo',
         icon: 'file-ppt',
-        path: 'auth/demo',
+        path: 'auth/mainpage',
         name: '验权页面',
         authority: {
           permission: 'form',

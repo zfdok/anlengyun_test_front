@@ -15,6 +15,11 @@ const options = {
       name: '欢迎页',
       component: () => import('@/pages/homepage')
     },
+    // {
+    //   path: '/mainpage',
+    //   name: '主页',
+    //   component: () => import('@/pages/mainpage')
+    // },
     {
       path: '*',
       name: '404',
@@ -32,12 +37,12 @@ const options = {
       redirect: '/homepage',
       children: [
         {
-          path: 'demo',
-          name: '演示页',
+          path: 'mainpage',
+          name: '冷链监测设备',
           meta: {
-            icon: 'file-ppt'
+            icon: 'home'
           },
-          component: () => import('@/pages/demo')
+          component: () => import('@/pages/mainpage')
         },
         {
           path: 'api_test',
@@ -66,7 +71,7 @@ const options = {
             {
               path: 'demo1',
               name: '演示页面1',
-              component: () => import('@/pages/demo'),
+              component: () => import('@/pages/mainpage'),
             }
           ]
         },
@@ -112,21 +117,21 @@ const options = {
         },
         {
           name: '验权页面',
-          path: 'auth/demo',
+          path: 'auth/mainpage',
           meta: {
             icon: 'file-ppt',
             authority: {
               permission: 'form',
               role: 'manager'
             },
-            component: () => import('@/pages/demo')
+            component: () => import('@/pages/mainpage')
           }
         },
         {
           name: '安冷科技官网',
           path: 'anleng',
           meta: {
-            icon: 'anleng',
+            icon: 'home',
             link: 'http://www.anleng-tec.com/'
           }
         },
@@ -134,7 +139,7 @@ const options = {
           name: '数字可视化大屏',
           path: 'echats1',
           meta: {
-            icon: 'echats1',
+            icon: 'eye',
             link: 'https://open.iot.10086.cn/view/main/#/share2d?id=5f87a68fb48f8d0057b63d0e'
           }
         }

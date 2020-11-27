@@ -10,7 +10,8 @@ module.exports = {
   READNOTICE: `${BASE_URL}/headernotice/readnotice`,
   GET_AD: `${BASE_URL}/headernotice/getad`,
   //onenet
-  ONENET_GET_ALL: `${BASE_URL}/onenet`,
   ONENET_GET_PROJECT_INFO: `${BASE_URL}/onenet/get_project_info`,
   ONENET_GET_USER_PROJECT_INFO: `${BASE_URL}/onenet/get_user_project_info`,
+  ONENET_GET_USER_DEVICE_LIST_ZX: `${BASE_URL}/onenet/get_user_devicelist_zx`,
+  ONENET_GET_USER_DEVICE_LIST_LY: `${BASE_URL}/onenet/get_user_devicelist_ly`,
 }
