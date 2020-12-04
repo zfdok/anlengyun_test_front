@@ -4,7 +4,7 @@ export default {
     test: 1,
     dataSource: [
       {
-        title: "在线温湿度监测仪",
+        title: "智能保温箱",
         avatar:
           "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
         all: 0, //
@@ -17,10 +17,10 @@ export default {
         un_activation_device: [], //
         err: 0,
         error_device: [],
-        offline_timespan:600000,
+        offline_timespan: 600000,
       },
       {
-        title: "蓝牙温湿度记录仪",
+        title: "冷链车",
         avatar:
           "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
         all: 0, //
@@ -33,7 +33,39 @@ export default {
         un_activation_device: [], //
         err: 0,
         error_device: [],
-        offline_timespan:600000,
+        offline_timespan: 600000,
+      },
+      {
+        title: "智慧冷库",
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+        all: 0, //
+        all_device: [],//
+        un_activation: 0,
+        online: 0,//
+        online_device: [], //
+        offline: 0,//
+        offline_device: [], //
+        un_activation_device: [], //
+        err: 0,
+        error_device: [],
+        offline_timespan: 600000,
+      },
+      {
+        title: "冷藏集装箱",
+        avatar:
+          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+        all: 0, //
+        all_device: [],//
+        un_activation: 0,
+        online: 0,//
+        online_device: [], //
+        offline: 0,//
+        offline_device: [], //
+        un_activation_device: [], //
+        err: 0,
+        error_device: [],
+        offline_timespan: 600000,
       },
     ],
   },
@@ -49,7 +81,7 @@ export default {
     settest(state, value) {
       state.test = value
     },
-    set_jcsb(state, value) {
+    set_cysb(state, value) {
       for (let key in value.data) {
         state.dataSource[value.index][key] = value.data[key]
       }

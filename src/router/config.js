@@ -45,6 +45,14 @@ const options = {
           component: () => import('@/pages/mainpage')
         },
         {
+          path: 'cymainpage',
+          name: '冷链储运设备',
+          meta: {
+            icon: 'home'
+          },
+          component: () => import('@/pages/cypage')
+        },
+        {
           path: 'api_test',
           name: 'API测试页',
           meta: {

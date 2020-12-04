@@ -85,11 +85,17 @@ export default {
     // 获取设备信息
     card_get_device() {
       switch (this.show_item.product_name) {
-        case "在线温湿度监测仪":
-          this.item.type = "zx";
+        case "智能保温箱":
+          this.item.type = "znbwx";
           break;
-        case "蓝牙温湿度记录仪":
-          this.item.type = "ly";
+        case "冷链车":
+          this.item.type = "llc";
+          break;
+        case "智慧冷库":
+          this.item.type = "zhlk";
+          break;
+        case "冷藏集装箱":
+          this.item.type = "lcjzx";
           break;
         default:
           break;
@@ -100,6 +106,7 @@ export default {
         device_name: this.show_item.device_name,
       })
         .then((result) => {
+          console.log(result);
           let temp = JSON.parse(result.data.msg.body);
           this.item.name = temp.data.desc == "" ? "未名设备" : temp.data.desc;
           this.item.status = temp.data.status;

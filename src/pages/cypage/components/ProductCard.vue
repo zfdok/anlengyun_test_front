@@ -68,15 +68,17 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import {
-  get_user_devicelist_zx,
-  get_user_devicelist_ly,
+  get_user_devicelist_znbwx,
+  get_user_devicelist_llc,
+  get_user_devicelist_zhlk,
+  get_user_devicelist_lcjzx,
 } from "@/services/onenet";
 
 export default {
   name: "ProductCard",
   computed: {
     ...mapState("account", ["user"]),
-    ...mapState("device_jcsb", ["dataSource"]),
+    ...mapState("device_cysb", ["dataSource"]),
     ...mapState("setting", ["isMobile"]),
   },
   data() {
@@ -99,7 +101,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("device_jcsb", ["set_jcsb"]),
+    ...mapMutations("device_cysb", ["set_cysb"]),
     //产品卡片选择时间
     card_meta_click(item) {
       this.current_select_item = item;
@@ -108,20 +110,38 @@ export default {
     //更新产品卡片信息
     update_product_card_info() {
       this.loading = true;
-      get_user_devicelist_zx({
+      get_user_devicelist_znbwx({
         user: this.user.name,
       })
         .then((result) => {
-          this.update_jcsb_state(result, 0); //更新在线监测仪状态
+          this.update_cysb_state(result, 0); //更新在线监测仪状态
         })
         .catch((err) => {
           console.log(err);
         });
-      get_user_devicelist_ly({
+              get_user_devicelist_llc({
         user: this.user.name,
       })
         .then((result) => {
-          this.update_jcsb_state(result, 1); //更新蓝牙监测仪状态
+          this.update_cysb_state(result, 1); //更新在线监测仪状态
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+              get_user_devicelist_zhlk({
+        user: this.user.name,
+      })
+        .then((result) => {
+          this.update_cysb_state(result, 2); //更新在线监测仪状态
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      get_user_devicelist_lcjzx({
+        user: this.user.name,
+      })
+        .then((result) => {
+          this.update_cysb_state(result, 3); //更新蓝牙监测仪状态
           this.loading = false;
         })
         .catch((err) => {
@@ -129,7 +149,7 @@ export default {
         });
     },
     //设备更新状态数据通用函数
-    update_jcsb_state(result, index) {
+    update_cysb_state(result, index) {
       let temp_all = JSON.parse(result.data.msg.body).data.meta.total; //在线监测仪设备总数
       let zx_list = JSON.parse(result.data.msg.body).data.list;
       let un_activation = 0;
@@ -138,7 +158,7 @@ export default {
       let online_device = [];
       let offline = 0;
       let offline_device = [];
-      let ordered_jcsb_all_list = [];
+      let ordered_cysb_all_list = [];
       zx_list.forEach((device) => {
         if (device.status == 1) {
           un_activation++;
@@ -151,25 +171,25 @@ export default {
           offline_device.push(device);
         }
       });
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(online_device);
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(offline_device);
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(
+      ordered_cysb_all_list = ordered_cysb_all_list.concat(online_device);
+      ordered_cysb_all_list = ordered_cysb_all_list.concat(offline_device);
+      ordered_cysb_all_list = ordered_cysb_all_list.concat(
         un_activation_device
       );
-      this.set_jcsb({ index: index, data: { all: temp_all } });
-      this.set_jcsb({
+      this.set_cysb({ index: index, data: { all: temp_all } });
+      this.set_cysb({
         index: index,
-        data: { all_device: ordered_jcsb_all_list },
+        data: { all_device: ordered_cysb_all_list },
       });
-      this.set_jcsb({ index: index, data: { un_activation: un_activation } });
-      this.set_jcsb({
+      this.set_cysb({ index: index, data: { un_activation: un_activation } });
+      this.set_cysb({
         index: index,
         data: { un_activation_device: un_activation_device },
       });
-      this.set_jcsb({ index: index, data: { online: online } });
-      this.set_jcsb({ index: index, data: { online_device: online_device } });
-      this.set_jcsb({ index: index, data: { offline: offline } });
-      this.set_jcsb({ index: index, data: { offline_device: offline_device } });
+      this.set_cysb({ index: index, data: { online: online } });
+      this.set_cysb({ index: index, data: { online_device: online_device } });
+      this.set_cysb({ index: index, data: { offline: offline } });
+      this.set_cysb({ index: index, data: { offline_device: offline_device } });
     },
   },
 };
