@@ -61,7 +61,7 @@
 
 <script>
 import { mapState } from "vuex";
-import Pd_card from "./pd_components/pd_card";
+import Pd_card from "../../../components/pd_components/pd_card";
 export default {
   name: "ProductDetail",
   components: {

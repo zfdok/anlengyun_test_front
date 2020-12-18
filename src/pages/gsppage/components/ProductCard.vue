@@ -75,7 +75,7 @@ export default {
   name: "ProductCard",
   computed: {
     ...mapState("account", ["user"]),
-    ...mapState("device_jcsb", ["dataSource"]),
+    ...mapState("device_gspsb", ["dataSource"]),
     ...mapState("setting", ["isMobile"]),
   },
   data() {
@@ -98,7 +98,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations("device_jcsb", ["set_jcsb"]),
+    ...mapMutations("device_gspsb", ["set_gspsb"]),
     //产品卡片选择时间
     card_meta_click(item) {
       this.current_select_item = item;
@@ -109,20 +109,10 @@ export default {
       this.loading = true;
       get_user_devicelist({
         user: this.user.name,
-        type: "zx"
+        type: "ylbwx"
       })
         .then((result) => {
-          this.update_jcsb_state(result, 0); //更新在线监测仪状态
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-      get_user_devicelist({
-        user: this.user.name,
-        type: "ly"
-      })
-        .then((result) => {
-          this.update_jcsb_state(result, 1); //更新蓝牙监测仪状态
+          this.update_gspsb_state(result, 0); //更新在线监测仪状态
           this.loading = false;
         })
         .catch((err) => {
@@ -130,7 +120,7 @@ export default {
         });
     },
     //设备更新状态数据通用函数
-    update_jcsb_state(result, index) {
+    update_gspsb_state(result, index) {
       let temp_all = JSON.parse(result.data.msg.body).data.meta.total; //在线监测仪设备总数
       let zx_list = JSON.parse(result.data.msg.body).data.list;
       let un_activation = 0;
@@ -139,7 +129,7 @@ export default {
       let online_device = [];
       let offline = 0;
       let offline_device = [];
-      let ordered_jcsb_all_list = [];
+      let ordered_gspsb_all_list = [];
       zx_list.forEach((device) => {
         if (device.status == 1) {
           un_activation++;
@@ -152,25 +142,25 @@ export default {
           offline_device.push(device);
         }
       });
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(online_device);
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(offline_device);
-      ordered_jcsb_all_list = ordered_jcsb_all_list.concat(
+      ordered_gspsb_all_list = ordered_gspsb_all_list.concat(online_device);
+      ordered_gspsb_all_list = ordered_gspsb_all_list.concat(offline_device);
+      ordered_gspsb_all_list = ordered_gspsb_all_list.concat(
         un_activation_device
       );
-      this.set_jcsb({ index: index, data: { all: temp_all } });
-      this.set_jcsb({
+      this.set_gspsb({ index: index, data: { all: temp_all } });
+      this.set_gspsb({
         index: index,
-        data: { all_device: ordered_jcsb_all_list },
+        data: { all_device: ordered_gspsb_all_list },
       });
-      this.set_jcsb({ index: index, data: { un_activation: un_activation } });
-      this.set_jcsb({
+      this.set_gspsb({ index: index, data: { un_activation: un_activation } });
+      this.set_gspsb({
         index: index,
         data: { un_activation_device: un_activation_device },
       });
-      this.set_jcsb({ index: index, data: { online: online } });
-      this.set_jcsb({ index: index, data: { online_device: online_device } });
-      this.set_jcsb({ index: index, data: { offline: offline } });
-      this.set_jcsb({ index: index, data: { offline_device: offline_device } });
+      this.set_gspsb({ index: index, data: { online: online } });
+      this.set_gspsb({ index: index, data: { online_device: online_device } });
+      this.set_gspsb({ index: index, data: { offline: offline } });
+      this.set_gspsb({ index: index, data: { offline_device: offline_device } });
     },
   },
 };

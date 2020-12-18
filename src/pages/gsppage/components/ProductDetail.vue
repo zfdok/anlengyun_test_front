@@ -8,27 +8,16 @@
         overflow-x: hidden;
       "
     >
-      <h2 v-show="item == 0">在线温湿度监测仪</h2>
-      <h2 v-show="item == 1">蓝牙温湿度记录</h2>
+      <h2 v-show="item == 0">医疗保温箱</h2>
+      <!-- <h2 v-show="item == 1">蓝牙温湿度记录</h2>
       <h2 v-show="item == 2">医用保温箱</h2>
-      <h2 v-show="item == 3">冷链车</h2>
+      <h2 v-show="item == 3">冷链车</h2> -->
       <div v-show="item == 0">
         <a-list
           :grid="{ gutter: 24, xl: 6, lg: 3, md: 3, sm: 2, xs: 1 }"
           :dataSource="dataSource[0].all_device"
         >
           <a-list-item slot="renderItem" slot-scope="item">
-            <Pd_card :show_item="item" v-if="!card_flash"></Pd_card>
-          </a-list-item>
-        </a-list>
-      </div>
-      <div v-show="item == 1">
-        <a-list
-          :grid="{ gutter: 24, xl: 6, lg: 3, md: 3, sm: 2, xs: 1 }"
-          :dataSource="dataSource[1].all_device"
-        >
-          <a-list-item slot="renderItem" slot-scope="item">
-            <!-- {{item}} -->
             <Pd_card :show_item="item" v-if="!card_flash"></Pd_card>
           </a-list-item>
         </a-list>
@@ -54,7 +43,7 @@ export default {
   },
   computed: {
     ...mapState("account", ["user"]),
-    ...mapState("device_jcsb", ["dataSource"]),
+    ...mapState("device_gspsb", ["dataSource"]),
     ...mapState("setting", ["isMobile"]),
   },
   props: {

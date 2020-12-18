@@ -68,10 +68,7 @@
 <script>
 import { mapState, mapMutations } from "vuex";
 import {
-  get_user_devicelist_znbwx,
-  get_user_devicelist_llc,
-  get_user_devicelist_zhlk,
-  get_user_devicelist_lcjzx,
+  get_user_devicelist,
 } from "@/services/onenet";
 
 export default {
@@ -110,8 +107,9 @@ export default {
     //更新产品卡片信息
     update_product_card_info() {
       this.loading = true;
-      get_user_devicelist_znbwx({
+      get_user_devicelist({
         user: this.user.name,
+        type: "znbwx"
       })
         .then((result) => {
           this.update_cysb_state(result, 0); //更新在线监测仪状态
@@ -119,8 +117,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-              get_user_devicelist_llc({
+        get_user_devicelist({
         user: this.user.name,
+        type: "llc"
       })
         .then((result) => {
           this.update_cysb_state(result, 1); //更新在线监测仪状态
@@ -128,8 +127,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-              get_user_devicelist_zhlk({
+              get_user_devicelist({
         user: this.user.name,
+        type: "zhlk"
       })
         .then((result) => {
           this.update_cysb_state(result, 2); //更新在线监测仪状态
@@ -137,8 +137,9 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      get_user_devicelist_lcjzx({
+      get_user_devicelist({
         user: this.user.name,
+        type: "lcjzx"
       })
         .then((result) => {
           this.update_cysb_state(result, 3); //更新蓝牙监测仪状态

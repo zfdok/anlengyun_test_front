@@ -3,10 +3,12 @@
     <a-card
       class="product_card"
       :style="card_header_style"
-      style="border-radius: 2rem; padding: 0"
+      :hoverable="true"
+      style="border-radius: 1rem; padding: 0"
+      @click="toDevicedetailPage"
     >
       <div style="font-size: 0.5rem; color: #ddd">设备名: {{ item.id }}</div>
-      <div style="font-size: 1.7rem; color: #fff">{{ item.name }}</div>
+      <div style="font-size: 1.4rem; color: #fff">{{ item.name }}</div>
       <div style="font-size: 1.2rem; color: #123">
         温度:
         <span style="font-size: 2rem; font-weight: bold">{{ item.temp }}</span>
@@ -54,6 +56,7 @@ export default {
         humi: 0.0,
         status: 1,
         timeinfo: "",
+        product_id: "",
       },
       item2: this.show_item,
     };
@@ -91,6 +94,21 @@ export default {
         case "蓝牙温湿度记录仪":
           this.item.type = "ly";
           break;
+        case "智能保温箱":
+          this.item.type = "znbwx";
+          break;
+        case "冷链车":
+          this.item.type = "llc";
+          break;
+        case "智慧冷库":
+          this.item.type = "zhlk";
+          break;
+        case "冷藏集装箱":
+          this.item.type = "lcjzx";
+          break;
+        case "医疗保温箱":
+          this.item.type = "ylbwx";
+          break;
         default:
           break;
       }
@@ -101,6 +119,8 @@ export default {
       })
         .then((result) => {
           let temp = JSON.parse(result.data.msg.body);
+          this.item.product_id = temp.data.product_id;
+          console.log(temp);
           this.item.name = temp.data.desc == "" ? "未名设备" : temp.data.desc;
           this.item.status = temp.data.status;
           switch (temp.data.status) {
@@ -143,6 +163,9 @@ export default {
           console.log(err);
         });
     },
+    toDevicedetailPage() {
+      this.$router.push({ path: "/device", query: { device: this.item } });
+    },
   },
 };
 </script>
@@ -154,7 +177,7 @@ div {
   text-overflow: ellipsis;
 }
 .product_card:hover {
-  box-shadow: 5px, 5px, 5px, #123;
+  box-shadow: 15px, 15px, 15px, #123;
 }
 .product_card {
   background-color: #eee;

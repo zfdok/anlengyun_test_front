@@ -15,11 +15,7 @@ const options = {
       name: '欢迎页',
       component: () => import('@/pages/homepage')
     },
-    // {
-    //   path: '/mainpage',
-    //   name: '主页',
-    //   component: () => import('@/pages/mainpage')
-    // },
+    
     {
       path: '*',
       name: '404',
@@ -51,6 +47,14 @@ const options = {
             icon: 'home'
           },
           component: () => import('@/pages/cypage')
+        },
+        {
+          path: 'gsppage',
+          name: '医药及GSP设备',
+          meta: {
+            icon: 'home'
+          },
+          component: () => import('@/pages/gsppage')
         },
         {
           path: 'api_test',
@@ -152,7 +156,12 @@ const options = {
           }
         }
       ]
-    }
+    },
+    {
+      path: '/device',
+      name: '设备页',
+      component: () => import('@/pages/devicepage')
+    },
   ]
 }
 

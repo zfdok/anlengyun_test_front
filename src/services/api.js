@@ -12,13 +12,8 @@ module.exports = {
   //onenet
   ONENET_GET_PROJECT_INFO: `${BASE_URL}/onenet/get_project_info`,
   ONENET_GET_USER_PROJECT_INFO: `${BASE_URL}/onenet/get_user_project_info`,
-  ONENET_GET_USER_DEVICE_LIST_ZX: `${BASE_URL}/onenet/get_user_devicelist_zx`,
-  ONENET_GET_USER_DEVICE_LIST_LY: `${BASE_URL}/onenet/get_user_devicelist_ly`,
   ONENET_GET_DEVICEDETAIL: `${BASE_URL}/onenet/get_devicedetail`,
   ONENET_GET_DEVICE: `${BASE_URL}/onenet/get_device`,
-
-  ONENET_GET_USER_DEVICE_LIST_ZNBWX: `${BASE_URL}/onenet/get_user_devicelist_znbwx`,
-  ONENET_GET_USER_DEVICE_LIST_LLC: `${BASE_URL}/onenet/get_user_devicelist_llc`,
-  ONENET_GET_USER_DEVICE_LIST_ZHLK: `${BASE_URL}/onenet/get_user_devicelist_zhlk`,
-  ONENET_GET_USER_DEVICE_LIST_LCJZX: `${BASE_URL}/onenet/get_user_devicelist_lcjzx`,
+  ONENET_GET_USER_DEVICE_LIST: `${BASE_URL}/onenet/get_user_devicelist`,
+  ONENET_GET_DEVICE_HISTORY: `${BASE_URL}/onenet/get_device_history`,
 }
