@@ -130,11 +130,13 @@ export default {
       let offline = 0;
       let offline_device = [];
       let ordered_gspsb_all_list = [];
+      var now_date = new Date();
       zx_list.forEach((device) => {
+        let last_time = new Date(device.last_time);
         if (device.status == 1) {
           un_activation++;
           un_activation_device.push(device);
-        } else if (device.status == 2) {
+        } else if (device.status == 2 || now_date - last_time < 360000) {
           online++;
           online_device.push(device);
         } else {

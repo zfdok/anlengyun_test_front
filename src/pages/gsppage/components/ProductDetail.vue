@@ -38,7 +38,7 @@ export default {
     return {
       item: this.current_select_item,
       zx_data: [],
-      card_flash:false
+      card_flash: false,
     };
   },
   computed: {
@@ -56,12 +56,14 @@ export default {
   },
   created() {
     setInterval(() => {
-      this.reload();
+      if (this.$route.path == "/gsppage") {
+        this.reload();
+      }
     }, 60000);
   },
   methods: {
     reload() {
-      this.card_flash= true;
+      this.card_flash = true;
       this.$nextTick(() => (this.card_flash = false));
     },
   },

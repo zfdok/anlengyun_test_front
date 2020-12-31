@@ -33,7 +33,7 @@
           </a-list-item>
         </a-list>
       </div>
-            <div v-show="item == 2">
+      <div v-show="item == 2">
         <a-list
           :grid="{ gutter: 24, xl: 6, lg: 3, md: 3, sm: 2, xs: 1 }"
           :dataSource="dataSource[2].all_device"
@@ -44,7 +44,7 @@
           </a-list-item>
         </a-list>
       </div>
-            <div v-show="item == 3">
+      <div v-show="item == 3">
         <a-list
           :grid="{ gutter: 24, xl: 6, lg: 3, md: 3, sm: 2, xs: 1 }"
           :dataSource="dataSource[3].all_device"
@@ -71,7 +71,7 @@ export default {
     return {
       item: this.current_select_item,
       zx_data: [],
-      card_flash:false
+      card_flash: false,
     };
   },
   computed: {
@@ -89,12 +89,14 @@ export default {
   },
   created() {
     setInterval(() => {
-      this.reload();
+      if (this.$route.path == "/cypage") {
+        this.reload();
+      }
     }, 60000);
   },
   methods: {
     reload() {
-      this.card_flash= true;
+      this.card_flash = true;
       this.$nextTick(() => (this.card_flash = false));
     },
   },

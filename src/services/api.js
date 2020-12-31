@@ -12,7 +12,7 @@ module.exports = {
   //onenet
   ONENET_GET_PROJECT_INFO: `${BASE_URL}/onenet/get_project_info`,
   ONENET_GET_USER_PROJECT_INFO: `${BASE_URL}/onenet/get_user_project_info`,
-  ONENET_GET_DEVICEDETAIL: `${BASE_URL}/onenet/get_devicedetail`,
+  ONENET_GET_DEVICE_LATEST: `${BASE_URL}/onenet/get_device_latest`,
   ONENET_GET_DEVICE: `${BASE_URL}/onenet/get_device`,
   ONENET_GET_USER_DEVICE_LIST: `${BASE_URL}/onenet/get_user_devicelist`,
   ONENET_GET_DEVICE_HISTORY: `${BASE_URL}/onenet/get_device_history`,

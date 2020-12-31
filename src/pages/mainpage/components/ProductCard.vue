@@ -67,9 +67,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import {
-  get_user_devicelist,
-} from "@/services/onenet";
+import { get_user_devicelist } from "@/services/onenet";
 
 export default {
   name: "ProductCard",
@@ -109,7 +107,7 @@ export default {
       this.loading = true;
       get_user_devicelist({
         user: this.user.name,
-        type: "zx"
+        type: "zx",
       })
         .then((result) => {
           this.update_jcsb_state(result, 0); //更新在线监测仪状态
@@ -119,7 +117,7 @@ export default {
         });
       get_user_devicelist({
         user: this.user.name,
-        type: "ly"
+        type: "ly",
       })
         .then((result) => {
           this.update_jcsb_state(result, 1); //更新蓝牙监测仪状态
@@ -140,11 +138,13 @@ export default {
       let offline = 0;
       let offline_device = [];
       let ordered_jcsb_all_list = [];
+      let now_date = new Date();
       zx_list.forEach((device) => {
+        let last_time = new Date(device.last_time);
         if (device.status == 1) {
           un_activation++;
           un_activation_device.push(device);
-        } else if (device.status == 2) {
+        } else if (device.status == 2 || now_date - last_time < 360000) {
           online++;
           online_device.push(device);
         } else {
