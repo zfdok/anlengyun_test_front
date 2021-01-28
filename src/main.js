@@ -12,12 +12,15 @@ import { initI18n } from '@/utils/i18n'
 import bootstrap from '@/bootstrap'
 import Axios from 'axios'
 import AmapVue from '@amap/amap-vue'
+import echarts from 'echarts'
+
+
 AmapVue.config.key = 'f705f0bad2d7aa04a7cd954b754223ea'
 
 const router = initRouter(store.state.setting.asyncRoutes)
 const i18n = initI18n('CN', 'US')
 
-
+Vue.prototype.$echarts = echarts
 Vue.prototype.$axios = Axios
 
 Vue.use(Antd)

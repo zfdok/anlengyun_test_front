@@ -72,6 +72,7 @@ export default {
       item: this.current_select_item,
       zx_data: [],
       card_flash: false,
+      timer1: null,
     };
   },
   computed: {
@@ -88,11 +89,15 @@ export default {
     },
   },
   created() {
-    setInterval(() => {
+    this.timer1 = setInterval(() => {
       if (this.$route.path == "/cypage") {
         this.reload();
       }
     }, 60000);
+  },
+  beforeDestroy() {
+    clearInterval(this.timer1);
+    this.timer1 = null;
   },
   methods: {
     reload() {

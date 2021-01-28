@@ -80,6 +80,7 @@ export default {
     return {
       current_select_item: 0,
       loading: false,
+      timer1: null,
     };
   },
   created() {
@@ -90,10 +91,17 @@ export default {
         description: "数据每分钟自动刷新, 如有需要可按F5手动刷新",
         icon: <a-icon type="smile" style="color: #108ee9" />,
       });
-      setInterval(() => {
-        this.update_product_card_info();
+      this.timer1 = setInterval(() => {
+        if (this.$route.path == "/mainpage") {
+          console.log("card的请求");
+          this.update_product_card_info();
+        }
       }, 60000);
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer1);
+    this.timer1 = null;
   },
   methods: {
     ...mapMutations("device_jcsb", ["set_jcsb"]),

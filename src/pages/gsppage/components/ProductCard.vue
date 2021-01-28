@@ -67,9 +67,7 @@
 
 <script>
 import { mapState, mapMutations } from "vuex";
-import {
-  get_user_devicelist,
-} from "@/services/onenet";
+import { get_user_devicelist } from "@/services/onenet";
 
 export default {
   name: "ProductCard",
@@ -82,6 +80,7 @@ export default {
     return {
       current_select_item: 0,
       loading: false,
+      timer1: null,
     };
   },
   created() {
@@ -92,10 +91,16 @@ export default {
         description: "数据每分钟自动刷新, 如有需要可按F5手动刷新",
         icon: <a-icon type="smile" style="color: #108ee9" />,
       });
-      setInterval(() => {
-        this.update_product_card_info();
+      this.timer1 = setInterval(() => {
+        if (this.$route.path == "/gsppage") {
+          this.update_product_card_info();
+        }
       }, 60000);
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.timer1);
+    this.timer1 = null;
   },
   methods: {
     ...mapMutations("device_gspsb", ["set_gspsb"]),
@@ -109,7 +114,7 @@ export default {
       this.loading = true;
       get_user_devicelist({
         user: this.user.name,
-        type: "ylbwx"
+        type: "ylbwx",
       })
         .then((result) => {
           this.update_gspsb_state(result, 0); //更新在线监测仪状态
@@ -162,7 +167,10 @@ export default {
       this.set_gspsb({ index: index, data: { online: online } });
       this.set_gspsb({ index: index, data: { online_device: online_device } });
       this.set_gspsb({ index: index, data: { offline: offline } });
-      this.set_gspsb({ index: index, data: { offline_device: offline_device } });
+      this.set_gspsb({
+        index: index,
+        data: { offline_device: offline_device },
+      });
     },
   },
 };

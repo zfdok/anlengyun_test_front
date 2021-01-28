@@ -36,7 +36,8 @@ const options = {
           path: 'mainpage',
           name: '冷链监测设备',
           meta: {
-            icon: 'home'
+            icon: 'home',
+            keepAlive: true
           },
           component: () => import('@/pages/mainpage')
         },
@@ -44,7 +45,8 @@ const options = {
           path: 'cymainpage',
           name: '冷链储运设备',
           meta: {
-            icon: 'home'
+            icon: 'home',
+            keepAlive: true
           },
           component: () => import('@/pages/cypage')
         },
@@ -52,7 +54,8 @@ const options = {
           path: 'gsppage',
           name: '医药及GSP设备',
           meta: {
-            icon: 'home'
+            icon: 'home',
+            keepAlive: true
           },
           component: () => import('@/pages/gsppage')
         },
