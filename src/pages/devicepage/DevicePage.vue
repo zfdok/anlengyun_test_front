@@ -2,7 +2,7 @@
   <div>
     <h2 style="text-align: center">设备历史记录</h2>
     <a-row>
-      <a-col :span="8">
+      <a-col :span="10">
         <a-range-picker
           style="margin-left: 3rem"
           :show-time="{ format: 'HH:mm' }"
@@ -15,7 +15,7 @@
         >
       </a-col>
 
-      <a-col :span="8">
+      <a-col :span="6">
         <span
           >近
           <a-input-number
@@ -26,7 +26,7 @@
             @change="onQueryHoursChange"
           />
           小时
-          <a-button style="margin-left: 1rem" type="primary" @click="onOK"
+          <a-button style="margin-left: 1rem" type="primary" @click="queryByHours"
             >数据查询</a-button
           ></span
         >
@@ -75,29 +75,40 @@
             <span slot="action" slot-scope="record"
               ><a-popover>
                 <template slot="title">
-                  <p color="#1abc9c" style="textalign: center;font-size: 1.5em;font-weight:bold"
-                    >历史数据快照</p
+                  <p
+                    color="#1abc9c"
+                    style="
+                      textalign: center;
+                      font-size: 1.5em;
+                      font-weight: bold;
+                    "
                   >
+                    历史数据快照
+                  </p>
                 </template>
                 <template slot="content">
                   <!-- <p>{{ record }}</p> -->
-                  <p style="width: 20rem;font-weight:bold"><a-tag color="red" style="font: 1em sans-serif"
+                  <p style="width: 20rem; font-weight: bold">
+                    <a-tag color="red" style="font: 1em sans-serif"
                       >上传时间:</a-tag
-                    >{{ record.timeText }}</p>
-                  <p style="font-weight:bold">
+                    >{{ record.timeText }}
+                  </p>
+                  <p style="font-weight: bold">
                     <a-tag color="blue" style="font: 1em sans-serif"
                       >历史温度:</a-tag
                     >{{ record.temp }}℃
                   </p>
-                  <p style="font-weight:bold">
+                  <p style="font-weight: bold">
                     <a-tag color="orange" style="font: 1em sans-serif"
                       >历史湿度:</a-tag
                     >{{ record.humi }}%
                   </p>
-                  <p style="font-weight:bold">
+                  <p style="font-weight: bold">
                     <a-tag color="purple" style="font: 1em sans-serif"
                       >历史位置:</a-tag
-                    >东经:{{ record.position[0]}}°，北纬:{{ record.position[1]}}°
+                    >东经:{{ record.position[0] }}°，北纬:{{
+                      record.position[1]
+                    }}°
                   </p>
                   <div class="map-container" style="height: 15rem">
                     <amap :zoom="10" :center="record.position">
@@ -139,14 +150,14 @@
       </a-col>
     </a-row>
     <!-- <h2>{{ selected }}</h2>
-    <h2>{{ map_path }}</h2>
-    <h2>设备历史数据</h2>
+    <h2>{{ map_path }}</h2> -->
+    <!-- <h2>设备历史数据</h2>
     <h2>{{ datas }}</h2>
-    <h2>{{ datas.length }}</h2>
+    <h2>{{ datas.length }}</h2> -->
     <h2>设备温度历史数据</h2>
     <h2>{{ temp_history_datas }}</h2>
     <h2>{{ temp_history_datas.length }}</h2>
-    <h2>设备湿度历史数据</h2>
+    <!-- <h2>设备湿度历史数据</h2>
     <h2>{{ humi_history_datas }}</h2>
     <h2>{{ humi_history_datas.length }}</h2>
     <h2>设备经度历史数据</h2>
@@ -256,6 +267,13 @@ export default {
       this.drawTemp();
       this.drawHumi();
     },
+    selected: function () {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * 3;
+      this.end_time = timestamp;
+      this.chart_datas = {};
+      this.onOK();
+    },
   },
   computed: {
     ...mapState("account", ["user"]),
@@ -296,22 +314,27 @@ export default {
       }
       return datas;
     },
-    chart_datas() {
-      let datas = [];
-      if (this.temp_history_datas.length == this.humi_history_datas.length) {
-        for (let index = 0; index < this.temp_history_datas.length; index++) {
-          datas.push([]);
+    chart_datas: {
+      get: function () {
+        let datas = [];
+        if (this.temp_history_datas.length == this.humi_history_datas.length) {
+          for (let index = 0; index < this.temp_history_datas.length; index++) {
+            datas.push([]);
+          }
+          this.temp_history_datas.forEach((data, index) => {
+            // datas[index].push(index);
+            datas[index].push(timestampToTime(parseInt(data.time)));
+            datas[index].push(parseFloat(data.value));
+          });
+          this.humi_history_datas.forEach((data, index) => {
+            datas[index].push(parseFloat(data.value));
+          });
         }
-        this.temp_history_datas.forEach((data, index) => {
-          // datas[index].push(index);
-          datas[index].push(timestampToTime(parseInt(data.time)));
-          datas[index].push(parseFloat(data.value));
-        });
-        this.humi_history_datas.forEach((data, index) => {
-          datas[index].push(parseFloat(data.value));
-        });
+        return datas.reverse();
+      },
+      set:function (datas) {
+        return datas
       }
-      return datas.reverse();
     },
     map_path() {
       let datas = [];
@@ -635,6 +658,12 @@ export default {
       this.start_time = timestamp - 3600 * 1000 * 24 * 7;
       this.end_time = timestamp;
       this.onOK();
+    },
+    queryByHours() {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * this.queryhours;
+      this.end_time = timestamp;
+      this.onOK()
     },
   },
 };

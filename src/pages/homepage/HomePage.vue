@@ -13,7 +13,7 @@
         <a-row>
           <a-col :span="2">
             <img
-              src="http://img.anlengyun.top/anlengLogo.png"
+              src="https://img.anlengyun.com/anlengLogo.png"
               style="height: 2rem; margin-left: 1rem"
             />
           </a-col>
@@ -48,7 +48,7 @@
             v-on:canplay="canplay"
           >
             <source
-              src="http://img.anlengyun.top/headvideo.webm"
+              src="https://img.anlengyun.com/headvideo.webm"
               type="video/webm"
             />
             浏览器不支持 video 标签，建议升级浏览器。
@@ -78,7 +78,7 @@
         <a-row>
           <a-col :span="3" style="height: 100%">
             <img
-              src="http://img.anlengyun.top/anlengLogo_white.png"
+              src="https://img.anlengyun.com/anlengLogo_white.png"
               class="footter_img"
             />
           </a-col>
@@ -91,7 +91,7 @@
           </a-col>
           <a-col :span="2" style="height: 100%; text-align: center">
             <img
-              src="http://img.anlengyun.top/al_site.png"
+              src="https://img.anlengyun.com/al_site.png"
               class="footter_img_ewm"
             />
             <p
@@ -109,7 +109,7 @@
           </a-col>
           <a-col :span="2" style="height: 100%; text-align: center">
             <img
-              src="http://img.anlengyun.top/weixingzh.png"
+              src="https://img.anlengyun.com/weixingzh.png"
               class="footter_img_ewm"
             />
             <p
@@ -288,7 +288,7 @@ a:hover {
 }
 .footer {
   height: 15rem;
-  background-image: url("http://img.anlengyun.top/footer_back_img.jpg");
+  background-image: url("https://img.anlengyun.com/footer_back_img.jpg");
 }
 .footter_img {
   opacity: 0.7;

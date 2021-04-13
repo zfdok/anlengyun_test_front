@@ -7,7 +7,7 @@
         to="/mainpage"
         :class="['logo', isMobile ? null : 'pc', headerTheme]"
       >
-        <img width="32" src="http://img.anlengyun.top/logo.png" />
+        <img width="32" src="https://img.anlengyun.com/logo.png" />
         <h1 v-if="!isMobile">{{ systemName }}</h1>
       </router-link>
       <a-divider v-if="isMobile" type="vertical" />

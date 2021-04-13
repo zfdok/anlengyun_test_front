@@ -25,7 +25,7 @@ export default {
   i18n: require("./i18n"),
   data() {
     return {
-      api_str: "http://localhost:3000/string",
+      api_str: "https://anlengyun.com:3000/string",
       loading: false,
       rev_data: "收到的响应",
     };

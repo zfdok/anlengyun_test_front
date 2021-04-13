@@ -15,7 +15,6 @@ const options = {
       name: '欢迎页',
       component: () => import('@/pages/homepage')
     },
-    
     {
       path: '*',
       name: '404',
