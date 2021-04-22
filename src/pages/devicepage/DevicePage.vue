@@ -352,7 +352,7 @@ export default {
   },
   methods: {
     onQueryHoursChange(value) {
-      console.log(value);
+      // console.log(value);
       var timestamp = new Date().valueOf();
       this.start_time = timestamp - 3600 * 1000 * value;
       this.end_time = timestamp;
@@ -394,20 +394,20 @@ export default {
           offset * 100
         );
         offset++;
-        console.log(revdatas.length);
+        // console.log(revdatas.length);
         this.temp_history_datas = this.temp_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的温度数据
     async get_temp_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        console.log("to:", to);
-        console.log("from:", to - 3600 * 1000 * 24 * 7);
+        // console.log("to:", to);
+        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_temp_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      console.log("to:", to);
-      console.log("from:", from);
+      // console.log("to:", to);
+      // console.log("from:", from);
       this.get_temp_history_in_a_week(to, to - from);
     },
     //获取湿度基础方法
@@ -447,20 +447,20 @@ export default {
           offset * 100
         );
         offset++;
-        console.log(revdatas.length);
+        // console.log(revdatas.length);
         this.humi_history_datas = this.humi_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的湿度数据
     async get_humi_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        console.log("to:", to);
-        console.log("from:", to - 3600 * 1000 * 24 * 7);
+        // console.log("to:", to);
+        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_humi_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      console.log("to:", to);
-      console.log("from:", from);
+      // console.log("to:", to);
+      // console.log("from:", from);
       this.get_humi_history_in_a_week(to, to - from);
     },
     //获取经度基础方法
@@ -498,20 +498,20 @@ export default {
           offset * 100
         );
         offset++;
-        console.log(revdatas.length);
+        // console.log(revdatas.length);
         this.le_history_datas = this.le_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的经度数据
     async get_le_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        console.log("to:", to);
-        console.log("from:", to - 3600 * 1000 * 24 * 7);
+        // console.log("to:", to);
+        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_le_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      console.log("to:", to);
-      console.log("from:", from);
+      // console.log("to:", to);
+      // console.log("from:", from);
       this.get_le_history_in_a_week(to, to - from);
     },
     //获取纬度基础方法
@@ -549,20 +549,20 @@ export default {
           offset * 100
         );
         offset++;
-        console.log(revdatas.length);
+        // console.log(revdatas.length);
         this.ln_history_datas = this.ln_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的纬度数据
     async get_ln_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        console.log("to:", to);
-        console.log("from:", to - 3600 * 1000 * 24 * 7);
+        // console.log("to:", to);
+        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_ln_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      console.log("to:", to);
-      console.log("from:", from);
+      // console.log("to:", to);
+      // console.log("from:", from);
       this.get_ln_history_in_a_week(to, to - from);
     },
     //整理datas
@@ -574,7 +574,7 @@ export default {
       await this.get_ln_history_from_to(form, to);
     },
     onDateSelOk(value) {
-      console.log("onOk: ", value);
+      // console.log("onOk: ", value);
       let start_time = new Date(value[0]._d).getTime();
       let end_time = new Date(value[1]._d).getTime();
       this.start_time = start_time;

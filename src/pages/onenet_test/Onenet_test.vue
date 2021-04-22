@@ -9,6 +9,24 @@
     <br />
     <br />
     <h2>{{ rev_data }}</h2>
+
+    <div class="map-container" style="height: 30rem">
+      <amap :zoom="14" :center="[117.000923, 36.1]">
+        <amap-marker :position="[117.000923, 36.1]" />
+        <amap-polyline
+          :path="[
+            [117.09, 36.11],
+            [117.09, 36.11],
+            [117.09, 36.11],
+            [117.09, 36.11],
+            [117.09, 36.11],
+            [117.09, 36.12],
+          ]"
+        />
+      </amap>
+    </div>
+
+
   </div>
 </template>
 
@@ -56,7 +74,6 @@ export default {
         .catch((err) => {
           console.log(err);
         });
-      //{ "code": 0, "msg": { "statusCode": 200, "body": "{\"code\":\"iot.application.invalidParameter\",\"msg\":\"invalid parameter\",\"requestId\":\"1699b29eb41148ce9cb5676589dc5aeb\",\"success\":false}", "headers": { "content-length": "132", "content-type": "application/json; charset=utf-8", "date": "Fri, 20 Nov 2020 03:01:58 GMT", "x-readtime": "8", "connection": "close" }, "request": { "uri": { "protocol": "http:", "slashes": true, "auth": null, "host": "openapi.heclouds.com", "port": null, "hostname": "openapi.heclouds.com", "hash": null, "search": "?action=QueryGroupDetail&version=1&project_id=Sd5MPm&id=HkhwSb", "query": "action=QueryGroupDetail&version=1&project_id=Sd5MPm&id=HkhwSb", "pathname": "/application", "path": "/application?action=QueryGroupDetail&version=1&project_id=Sd5MPm&id=HkhwSb", "href": "http://openapi.heclouds.com/application?action=QueryGroupDetail&version=1&project_id=Sd5MPm&id=HkhwSb" }, "method": "GET", "headers": { "Authorization": "version=2020-05-29&res=userid%2F163120&et=1634629884&method=sha1&sign=g6oXn%2B6R%2BYl8aDEqwfrAwSktaTk%3D" } } } }
     },
   },
 };

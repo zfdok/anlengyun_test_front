@@ -6,7 +6,7 @@ export default {
       {
         title: "医疗保温箱",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/ylbwx.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,

@@ -93,7 +93,7 @@ export default {
       });
       this.timer1 = setInterval(() => {
         if (this.$route.path == "/mainpage") {
-          console.log("card的请求");
+          // console.log("card的请求");
           this.update_product_card_info();
         }
       }, 60000);
@@ -195,7 +195,7 @@ export default {
   text-shadow: 1px 1px 5px #aaaaaa;
   position: relative;
   background-color: #1890ff;
-  background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1606192351631&di=90caa6623a190814804d8b99ceb55283&imgtype=0&src=http%3A%2F%2Fppt.yyfangchan.com%2Fd%2FIMG%2F154nxv02knd.jpg);
+  background-image: url(https://img.anlengyun.com/card_background.jpg);
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100% 100%;

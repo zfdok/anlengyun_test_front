@@ -73,7 +73,7 @@
       this.columns.forEach(item => {
         this.$set(item, 'search', {...item.search, visible: false, value: undefined, format: this.getFormat(item)})
       })
-      console.log(this.columns)
+      // console.log(this.columns)
     },
     watch: {
       searchCols(newVal, oldVal) {
@@ -296,8 +296,6 @@
     display: flex;
     margin: -6px 0;
     justify-content: space-between;
-    .btn{
-    }
   }
 }
 </style>

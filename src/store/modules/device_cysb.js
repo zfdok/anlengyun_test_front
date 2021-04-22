@@ -6,7 +6,7 @@ export default {
       {
         title: "智能保温箱",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/znbwx.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,
@@ -22,7 +22,7 @@ export default {
       {
         title: "冷链车",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/llc.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,
@@ -38,7 +38,7 @@ export default {
       {
         title: "智慧冷库",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/zhlk.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,
@@ -54,7 +54,7 @@ export default {
       {
         title: "冷藏集装箱",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/lcjzx.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,

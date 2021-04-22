@@ -6,7 +6,7 @@ export default {
       {
         title: "在线温湿度监测仪",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/zxjcy.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,
@@ -22,7 +22,7 @@ export default {
       {
         title: "蓝牙温湿度记录仪",
         avatar:
-          "https://gw.alipayobjects.com/zos/rmsportal/WdGqmHpayyMjiEhcKoVE.png",
+          "https://img.anlengyun.com/lyjcy.png",
         all: 0, //
         all_device: [],//
         un_activation: 0,

@@ -69,7 +69,7 @@ export default {
   created() {
     this.timer1 = setInterval(() => {
       if (this.$route.path == "/mainpage") {
-        console.log("PD的请求");
+        // console.log("PD的请求");
         this.reload();
       }
     }, 60000);

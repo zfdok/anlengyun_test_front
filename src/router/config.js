@@ -10,11 +10,11 @@ const options = {
       name: '登录页',
       component: () => import('@/pages/login')
     },
-    {
-      path: '/homepage',
-      name: '欢迎页',
-      component: () => import('@/pages/homepage')
-    },
+    // {
+    //   path: '/homepage',
+    //   name: '欢迎页',
+    //   component: () => import('@/pages/homepage')
+    // },
     {
       path: '*',
       name: '404',
@@ -29,7 +29,7 @@ const options = {
       path: '/',
       name: '首页',
       component: TabsView,
-      redirect: '/homepage',
+      redirect: '/login',
       children: [
         {
           path: 'mainpage',
