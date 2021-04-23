@@ -1,8 +1,8 @@
 <template>
   <div>
-    <a-popover :title="item.name + '  (' + item.id + ')'" > 
+    <a-popover :title="item.name + '  (' + item.id + ')'">
       <template slot="content">
-        <a-row style="width: 300px; height: 300px"> 
+        <a-row style="width: 300px; height: 300px">
           <a-col :span="12">
             <div style="font-size: 1.2rem; color: #0084ff">
               <span style="font-size: 2rem; font-weight: bold">{{
@@ -25,13 +25,26 @@
               style="height: 15rem"
               v-if="item.le != '0'"
             >
-              <amap :zoom="10" :center="[item.le, item.ln]">
-                <amap-marker :position="[item.le, item.ln]" />
-              </amap>
+              <baidu-map
+                style="width: 100%; height: 100%"
+                :scroll-wheel-zoom="true"
+                mapType="BMAP_NORMAL_MAP"
+                :center="{ lng: item.le, lat: item.ln }"
+                :zoom="13"
+                ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
+              >
+                <bm-marker
+                  :position="{ lng: item.le, lat: item.ln }"
+                  animation="BMAP_ANIMATION_BOUNCE">
+                  <bm-label
+                    :content="'东经'+item.le+',北纬'+item.ln"
+                    :labelStyle="{ color: 'darkblue', fontSize: '14px' }"
+                    :offset="{ width: -50, height: 28 }"
+                  />
+                </bm-marker>
+              </baidu-map>
             </div>
-            <div v-else>
-              暂无位置信息
-            </div>
+            <div v-else>暂无位置信息</div>
           </a-col>
         </a-row>
       </template>
@@ -80,10 +93,20 @@
 </template>
 
 <script>
+import {
+  BaiduMap,
+  BmMarker,
+  BmLabel,
+} from "vue-baidu-map";
 import { mapState, mapMutations } from "vuex";
 import { get_device, get_device_latest } from "@/services/onenet";
 export default {
   name: "Pd_card",
+  components: {
+    BaiduMap,
+    BmMarker,
+    BmLabel,
+  },
   data() {
     return {
       item: {
@@ -99,7 +122,7 @@ export default {
         product_id: "",
         last_time: "",
       },
-      item2: this.show_item,
+      item2 : this.show_item,
     };
   },
   props: {

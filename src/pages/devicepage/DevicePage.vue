@@ -26,7 +26,10 @@
             @change="onQueryHoursChange"
           />
           小时
-          <a-button style="margin-left: 1rem" type="primary" @click="queryByHours"
+          <a-button
+            style="margin-left: 1rem"
+            type="primary"
+            @click="queryByHours"
             >数据查询</a-button
           ></span
         >
@@ -111,9 +114,26 @@
                     }}°
                   </p>
                   <div class="map-container" style="height: 15rem">
-                    <amap :zoom="10" :center="record.position">
-                      <amap-marker :position="record.position" />
-                    </amap>
+                    <baidu-map
+                      style="width: 100%; height: 100%"
+                      :scroll-wheel-zoom="true"
+                      mapType="BMAP_NORMAL_MAP"
+                      :center="{
+                        lng: record.position[0],
+                        lat: record.position[1],
+                      }"
+                      :zoom="13"
+                      ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
+                    >
+                      <bm-marker
+                        :position="{
+                          lng: record.position[0],
+                          lat: record.position[1],
+                        }"
+                        animation="BMAP_ANIMATION_BOUNCE"
+                      >
+                      </bm-marker>
+                    </baidu-map>
                   </div>
                 </template>
                 <a-tag color="#16a085">数据快照</a-tag>
@@ -126,53 +146,61 @@
         <div
           class="map-container"
           style="
+            width: 100%;
             height: 42rem;
             padding: 0.5rem;
             margin: 1rem;
             background-color: #eee;
           "
         >
-          <amap
-            v-if="mapvisible"
-            :zoom="14"
+          <baidu-map
+            style="width: 100%; height: 42rem"
+            :scroll-wheel-zoom="true"
+            mapType="BMAP_NORMAL_MAP"
             :center="
-              map_path[0] != undefined ? map_path[0] : [last_le, last_ln]
+              map_path[0] != undefined
+                ? map_path[0]
+                : { lng: last_le, lat: last_ln }
             "
+            :zoom="13"
+            ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
           >
-            <amap-marker
-              :position="
-                map_path[0] != undefined ? map_path[0] : [last_le, last_ln]
-              "
-            />
-            <amap-polyline :path="map_path" />
-          </amap>
+            <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
+            <bm-navigation
+              anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+              type="BMAP_NAVIGATION_CONTROL_LARGE"
+            ></bm-navigation>
+            <bm-map-type
+              :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
+              anchor="BMAP_ANCHOR_TOP_LEFT"
+            ></bm-map-type>
+            <bm-marker
+              :position="{ lng: last_le, lat: last_ln }"
+              animation="BMAP_ANIMATION_BOUNCE"
+            >
+            </bm-marker>
+            <bm-polyline
+              :path="map_path"
+              stroke-color="blue"
+              :stroke-opacity="0.5"
+              :stroke-weight="8"
+            ></bm-polyline>
+          </baidu-map>
         </div>
       </a-col>
     </a-row>
-    <!-- <h2>{{ selected }}</h2>
-    <h2>{{ map_path }}</h2> -->
-    <!-- <h2>设备历史数据</h2>
-    <h2>{{ datas }}</h2>
-    <h2>{{ datas.length }}</h2> -->
-    <h2>设备温度历史数据</h2>
-    <h2>{{ temp_history_datas }}</h2>
-    <h2>{{ temp_history_datas.length }}</h2>
-    <!-- <h2>设备湿度历史数据</h2>
-    <h2>{{ humi_history_datas }}</h2>
-    <h2>{{ humi_history_datas.length }}</h2>
-    <h2>设备经度历史数据</h2>
-    <h2>{{ le_history_datas }}</h2>
-    <h2>{{ le_history_datas.length }}</h2>
-    <h2>设备纬度历史数据</h2>
-    <h2>{{ ln_history_datas }}</h2>
-    <h2>{{ ln_history_datas.length }}</h2>
-    <h2>设备[]数据</h2>
-    <h2>{{ chart_datas }}</h2>
-    <h2>{{ chart_datas.length }}</h2> -->
   </div>
 </template>
 
 <script>
+import {
+  BaiduMap,
+  BmNavigation,
+  BmMapType,
+  BmMarker,
+  BmPolyline,
+  BmScale
+} from "vue-baidu-map";
 const columns = [
   {
     dataIndex: "name",
@@ -226,6 +254,14 @@ import { mapState } from "vuex";
 import { get_device_history } from "@/services/onenet";
 
 export default {
+  components: {
+    BaiduMap,
+    BmNavigation,
+    BmMapType,
+    BmMarker,
+    BmPolyline,
+    BmScale
+  },
   data() {
     return {
       columns, //列表展示项
@@ -244,7 +280,6 @@ export default {
       end_time: 0,
       queryhours: 3,
       queryitems: 30,
-      // map_path: [],
     };
   },
   mounted() {
@@ -263,7 +298,7 @@ export default {
   },
   watch: {
     chart_datas: function (v) {
-      console.log(v);
+      typeof v;
       this.drawTemp();
       this.drawHumi();
     },
@@ -332,31 +367,32 @@ export default {
         }
         return datas.reverse();
       },
-      set:function (datas) {
-        return datas
-      }
+      set: function (datas) {
+        return datas;
+      },
     },
     map_path() {
       let datas = [];
       if (this.datas.length) {
         this.datas.forEach((data) => {
-          datas.push(data.position);
+          // datas.push(data.position);
+          datas.push({ lng: data.position[0], lat: data.position[1] });
         });
       }
       if (datas.length) {
         return datas;
       } else {
-        return [[0, 0]];
+        return [];
       }
     },
   },
   methods: {
     onQueryHoursChange(value) {
-      // console.log(value);
       var timestamp = new Date().valueOf();
       this.start_time = timestamp - 3600 * 1000 * value;
       this.end_time = timestamp;
     },
+    lineupdate() {},
     //获取温度基础方法
     async get_temp_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
@@ -663,7 +699,7 @@ export default {
       var timestamp = new Date().valueOf();
       this.start_time = timestamp - 3600 * 1000 * this.queryhours;
       this.end_time = timestamp;
-      this.onOK()
+      this.onOK();
     },
   },
 };

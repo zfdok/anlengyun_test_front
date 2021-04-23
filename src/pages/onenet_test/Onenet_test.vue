@@ -10,35 +10,76 @@
     <br />
     <h2>{{ rev_data }}</h2>
 
-    <div class="map-container" style="height: 30rem">
-      <amap :zoom="14" :center="[117.000923, 36.1]">
-        <amap-marker :position="[117.000923, 36.1]" />
-        <amap-polyline
-          :path="[
-            [117.09, 36.11],
-            [117.09, 36.11],
-            [117.09, 36.11],
-            [117.09, 36.11],
-            [117.09, 36.11],
-            [117.09, 36.12],
-          ]"
+    <baidu-map
+      class="bm-view"
+      :scroll-wheel-zoom="true"
+      mapType="BMAP_NORMAL_MAP"
+      center="北京"
+      :zoom="zoom"
+      ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
+    >
+      <!-- <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale> -->
+      <bm-navigation
+        anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+        type="BMAP_NAVIGATION_CONTROL_LARGE"
+      ></bm-navigation>
+      <bm-map-type
+        :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
+        anchor="BMAP_ANCHOR_TOP_LEFT"
+      ></bm-map-type>
+      <bm-overview-map
+        anchor="BMAP_ANCHOR_TOP_RIGHT"
+        :isOpen="true"
+        :size="{ width: 100, height: 100 }"
+      ></bm-overview-map>
+      <bm-panorama
+        anchor="BMAP_ANCHOR_BOTTOM_LEFT"
+        :offset="{ width: 0, height: 50 }"
+      ></bm-panorama>
+      <bm-marker
+        :position="{ lng: 116.404, lat: 39.915 }"
+        :dragging="true"
+        animation="BMAP_ANIMATION_BOUNCE"
+      >
+        <bm-label
+          content="我爱北京天安门"
+          :labelStyle="{ color: 'red', fontSize: '14px' }"
+          :offset="{ width: -35, height: 30 }"
         />
-      </amap>
-    </div>
-
-
+      </bm-marker>
+    </baidu-map>
   </div>
 </template>
 
 <script>
+import {
+  BaiduMap,
+  BmNavigation,
+  BmMapType,
+  BmOverviewMap,
+  BmPanorama,
+  BmMarker,
+  BmLabel,
+} from "vue-baidu-map";
 import { mapGetters } from "vuex";
 import {
   onenet_get_project_info,
   onenet_get_user_project_info,
 } from "@/services/onenet";
 export default {
+  components: {
+    BaiduMap,
+    BmNavigation,
+    BmMapType,
+    BmOverviewMap,
+    BmPanorama,
+    BmMarker,
+    BmLabel,
+  },
   data() {
     return {
+      center: { lng: 0, lat: 0 },
+      zoom: 13,
       rev_data: "收到的响应",
       onenet_token:
         "version=2020-05-29&res=userid%2F163120&et=1634629884&method=sha1&sign=g6oXn%2B6R%2BYl8aDEqwfrAwSktaTk%3D",
@@ -80,5 +121,9 @@ export default {
 </script>
 
 <style scoped lang="less">
+.bm-view {
+  width: 100%;
+  height: 300px;
+}
 @import "index";
 </style>
