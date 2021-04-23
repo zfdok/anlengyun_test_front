@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"@amap/amap-vue@^2.0.9":
-  "integrity" "sha512-fntI1z9D1uh/JN4PD/PQu8iD2lKIdR/wRnF7AffsqcPJXQBBh7GGe6smZOw2UZJleCl+Fck3d4kHtRIAOvM46A== sha1-qwgw0WAftL0Aoig7A6VRktbTuf0="
-  "resolved" "https://registry.npm.taobao.org/@amap/amap-vue/download/@amap/amap-vue-2.0.9.tgz"
-  "version" "2.0.9"
-
 "@ant-design/colors@^3.1.0":
   "integrity" "sha1-WtQ9YZ6RHzSI66wwPWBuZqhCOQM="
   "resolved" "https://registry.npm.taobao.org/@ant-design/colors/download/@ant-design/colors-3.2.2.tgz"
@@ -3444,7 +3439,7 @@
   "resolved" "https://registry.npm.taobao.org/core-js/download/core-js-2.6.11.tgz?cache=0&sync_timestamp=1604675498528&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-2.6.11.tgz"
   "version" "2.6.11"
 
-"core-js@^3", "core-js@^3.3.2", "core-js@^3.6.4", "core-js@^3.6.5":
+"core-js@^3", "core-js@^3.6.4", "core-js@^3.6.5":
   "integrity" "sha1-sKdhoCSIV3r7+XF55Ggb9JVoUg8="
   "resolved" "https://registry.npm.taobao.org/core-js/download/core-js-3.7.0.tgz?cache=0&sync_timestamp=1604675498528&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.7.0.tgz"
   "version" "3.7.0"

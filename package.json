@@ -14,7 +14,6 @@
     "docs:deploy": "vuepress build docs && gh-pages -d docs/.vuepress/dist -b master -r https://gitee.com/iczer/vue-antd-admin-docs.git"
   },
   "dependencies": {
-    "@amap/amap-vue": "^2.0.9",
     "@antv/data-set": "^0.11.4",
     "animate.css": "^4.1.0",
     "ant-design-vue": "^1.7.4",

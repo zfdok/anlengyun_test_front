@@ -242,6 +242,8 @@ export default {
     },
     toDevicedetailPage() {
       this.set_selected(this.item);
+      sessionStorage.setItem('session_selected',JSON.stringify(this.item))
+      sessionStorage.setItem('session_user',JSON.stringify(this.user))
       this.$router.push({ path: "/device", query: { device: this.item } });
     },
   },

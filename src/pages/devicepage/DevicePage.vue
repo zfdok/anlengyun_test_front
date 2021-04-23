@@ -90,7 +90,6 @@
                   </p>
                 </template>
                 <template slot="content">
-                  <!-- <p>{{ record }}</p> -->
                   <p style="width: 20rem; font-weight: bold">
                     <a-tag color="red" style="font: 1em sans-serif"
                       >上传时间:</a-tag
@@ -199,7 +198,7 @@ import {
   BmMapType,
   BmMarker,
   BmPolyline,
-  BmScale
+  BmScale,
 } from "vue-baidu-map";
 const columns = [
   {
@@ -250,7 +249,7 @@ function timestampToTime(timestamp) {
   var s = date.getSeconds();
   return Y + M + D + h + m + s;
 }
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 import { get_device_history } from "@/services/onenet";
 
 export default {
@@ -260,7 +259,7 @@ export default {
     BmMapType,
     BmMarker,
     BmPolyline,
-    BmScale
+    BmScale,
   },
   data() {
     return {
@@ -280,29 +279,52 @@ export default {
       end_time: 0,
       queryhours: 3,
       queryitems: 30,
+      session_selected: {},
+      session_user: {},
     };
   },
   mounted() {
+    console.log("mounted");
     this.drawTemp();
     this.drawHumi();
   },
   created() {
-    this.last_le = this.selected.le;
-    this.last_ln = this.selected.ln;
+    console.log("created");
+    this.session_selected = JSON.parse(
+      sessionStorage.getItem("session_selected")
+    );
+    this.session_user = JSON.parse(sessionStorage.getItem("session_user"));
+    this.last_le = this.session_selected.le;
+    this.last_ln = this.session_selected.ln;
     var timestamp = new Date().valueOf();
     this.start_time = timestamp - 3600 * 1000 * 3;
     this.end_time = timestamp;
-    this.get_datas(this.start_time, this.end_time).then(() => {
-      this.mapvisible = true;
-    });
+    // this.get_datas(this.start_time, this.end_time).then(() => {
+    //   this.mapvisible = true;
+    // });
   },
   watch: {
+    $route(to, from) {
+      console.log(to);
+      console.log(from);
+      if (to.path == "/device") {
+        this.chart_datas = {};
+        this.session_selected = JSON.parse(
+          sessionStorage.getItem("session_selected")
+        );
+        this.session_user = JSON.parse(sessionStorage.getItem("session_user"));
+        console.log(this.session_selected);
+      }
+      if (from.path == "/device") {
+        console.log("OKdevice");
+      }
+    },
     chart_datas: function (v) {
       typeof v;
       this.drawTemp();
       this.drawHumi();
     },
-    selected: function () {
+    session_selected: function () {
       var timestamp = new Date().valueOf();
       this.start_time = timestamp - 3600 * 1000 * 3;
       this.end_time = timestamp;
@@ -311,8 +333,6 @@ export default {
     },
   },
   computed: {
-    ...mapState("account", ["user"]),
-    ...mapState("selected_device", ["selected"]),
     datas() {
       let datas = [];
       if (this.temp_history_datas.length == this.humi_history_datas.length) {
@@ -357,7 +377,6 @@ export default {
             datas.push([]);
           }
           this.temp_history_datas.forEach((data, index) => {
-            // datas[index].push(index);
             datas[index].push(timestampToTime(parseInt(data.time)));
             datas[index].push(parseFloat(data.value));
           });
@@ -375,7 +394,6 @@ export default {
       let datas = [];
       if (this.datas.length) {
         this.datas.forEach((data) => {
-          // datas.push(data.position);
           datas.push({ lng: data.position[0], lat: data.position[1] });
         });
       }
@@ -397,9 +415,9 @@ export default {
     async get_temp_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
         get_device_history({
-          user: this.user.name,
-          type: this.selected["type"],
-          device_name: this.selected["id"],
+          user: this.session_user.name,
+          type: this.session_selected["type"],
+          device_name: this.session_selected["id"],
           start_time: end_time - timespan,
           end_time,
           identifier,
@@ -437,22 +455,18 @@ export default {
     //获取任意两个时间点间的温度数据
     async get_temp_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        // console.log("to:", to);
-        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_temp_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      // console.log("to:", to);
-      // console.log("from:", from);
       this.get_temp_history_in_a_week(to, to - from);
     },
     //获取湿度基础方法
     async get_humi_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
         get_device_history({
-          user: this.user.name,
-          type: this.selected["type"],
-          device_name: this.selected["id"],
+          user: this.session_user.name,
+          type: this.session_selected["type"],
+          device_name: this.session_selected["id"],
           start_time: end_time - timespan,
           end_time,
           identifier,
@@ -503,9 +517,9 @@ export default {
     async get_le_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
         get_device_history({
-          user: this.user.name,
-          type: this.selected["type"],
-          device_name: this.selected["id"],
+          user: this.session_user.name,
+          type: this.session_selected["type"],
+          device_name: this.session_selected["id"],
           start_time: end_time - timespan,
           end_time,
           identifier,
@@ -554,9 +568,9 @@ export default {
     async get_ln_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
         get_device_history({
-          user: this.user.name,
-          type: this.selected["type"],
-          device_name: this.selected["id"],
+          user: this.session_user.name,
+          type: this.session_selected["type"],
+          device_name: this.session_selected["id"],
           start_time: end_time - timespan,
           end_time,
           identifier,
