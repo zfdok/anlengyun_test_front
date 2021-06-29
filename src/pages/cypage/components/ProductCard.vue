@@ -235,9 +235,10 @@ export default {
   text-shadow: 2px 2px 5px #888;
 }
 .card-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 48px;
+  width: 100px;
+  height: 100px;
+  border-radius: 20px;
+  border: 3px solid #ccc;
 }
 .new-btn {
   border-radius: 2px;

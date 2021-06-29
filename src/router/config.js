@@ -10,11 +10,6 @@ const options = {
       name: '登录页',
       component: () => import('@/pages/login')
     },
-    // {
-    //   path: '/homepage',
-    //   name: '欢迎页',
-    //   component: () => import('@/pages/homepage')
-    // },
     {
       path: '*',
       name: '404',
@@ -35,7 +30,7 @@ const options = {
           path: 'mainpage',
           name: '冷链监测设备',
           meta: {
-            icon: 'home',
+            icon: 'ant-cloud',
             keepAlive: true
           },
           component: () => import('@/pages/mainpage')
@@ -44,7 +39,7 @@ const options = {
           path: 'cymainpage',
           name: '冷链储运设备',
           meta: {
-            icon: 'home',
+            icon: 'ant-cloud',
             keepAlive: true
           },
           component: () => import('@/pages/cypage')
@@ -53,110 +48,161 @@ const options = {
           path: 'gsppage',
           name: '医药及GSP设备',
           meta: {
-            icon: 'home',
+            icon: 'ant-cloud',
             keepAlive: true
           },
           component: () => import('@/pages/gsppage')
         },
         {
-          path: 'api_test',
-          name: 'API测试页',
+          path: 'accountmgr',
+          name: '账户管理',
           meta: {
-            icon: 'ie'
-          },
-          component: () => import('@/pages/api_test')
-        },
-        {
-          path: 'onenet_test',
-          name: 'OneNet测试页',
-          meta: {
-            icon: 'reddit'
-          },
-          component: () => import('@/pages/onenet_test')
-        },
-        {
-          path: 'parent1',
-          name: '父级路由1',
-          meta: {
-            icon: 'dashboard',
-          },
-          component: BlankView,
-          children: [
-            {
-              path: 'demo1',
-              name: '演示页面1',
-              component: () => import('@/pages/mainpage'),
-            }
-          ]
-        },
-        {
-          path: 'parent2',
-          name: '父级路由2',
-          meta: {
-            icon: 'form'
+            icon: 'team',
           },
           component: PageView,
           children: [
             {
-              path: 'demo2',
-              name: '演示页面2',
-              component: () => import('@/pages/demo'),
+              path: 'property',
+              name: '资产管理',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'expenditure',
+              name: '费用管理',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'selfaccount',
+              name: '自身账户管理',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'subaccount',
+              name: '子账户管理',
+              component: () => import('@/pages/blankpage'),
+            },
+          ]
+        },
+        {
+          path: 'message',
+          name: '消息管理',
+          meta: {
+            icon: 'message',
+            keepAlive: true
+          },
+          component: () => import('@/pages/blankpage')
+        },
+        {
+          path: 'manifest',
+          name: '货单管理',
+          meta: {
+            icon: 'file-done',
+          },
+          component: PageView,
+          children: [
+            {
+              path: 'manifestbind',
+              name: '货单绑定',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'manifestinfo',
+              name: '货单信息查询',
+              component: () => import('@/pages/blankpage'),
             }
           ]
         },
         {
-          path: 'exception',
-          name: '异常页',
+          path: 'charts',
+          name: '信息可视化',
           meta: {
-            icon: 'warning',
+            icon: 'pie-chart'
+          },
+          component: PageView,
+          children: [
+            {
+              path: 'overviewmap',
+              name: '资产概览',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'productoverview',
+              name: '产品概览',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              path: 'singledeviceview',
+              name: '单设备追踪',
+              component: () => import('@/pages/blankpage'),
+            },
+            {
+              name: '数字可视化大屏',
+              path: 'echats1',
+              meta: {
+                // icon: 'eye',
+                link: 'https://open.iot.10086.cn/view/main/#/share2d?id=5f87a68fb48f8d0057b63d0e'
+              }
+            }
+          ]
+        },
+        {
+          path: 'datacenter',
+          name: '数据中心',
+          meta: {
+            icon: 'bar-chart',
           },
           component: BlankView,
           children: [
             {
-              path: '404',
-              name: 'Exp404',
-              component: () => import('@/pages/exception/404')
+              path: 'search',
+              name: '数据查询',
+              component: () => import('@/pages/blankpage')
             },
             {
-              path: '403',
-              name: 'Exp403',
-              component: () => import('@/pages/exception/403')
+              path: 'statistics',
+              name: '统计报表',
+              component: () => import('@/pages/blankpage')
             },
             {
-              path: '500',
-              name: 'Exp500',
-              component: () => import('@/pages/exception/500')
+              path: 'verification_report_request',
+              name: '验证报告申请',
+              component: () => import('@/pages/blankpage')
+            },
+            {
+              path: 'verification_report',
+              name: '验证报告交付',
+              component: () => import('@/pages/blankpage')
             }
           ]
         },
         {
-          name: '验权页面',
-          path: 'auth/mainpage',
+          path: 'service',
+          name: '客户服务',
           meta: {
-            icon: 'file-ppt',
-            authority: {
-              permission: 'form',
-              role: 'manager'
-            },
-            component: () => import('@/pages/mainpage')
-          }
+            icon: 'customer-service',
+          },
+          component: () => import('@/pages/blankpage')
         },
-        {
-          name: '安冷科技官网',
-          path: 'anleng',
-          meta: {
-            icon: 'home',
-            link: 'http://www.anleng-tec.com/'
-          }
-        },
-        {
-          name: '数字可视化大屏',
-          path: 'echats1',
-          meta: {
-            icon: 'eye',
-            link: 'https://open.iot.10086.cn/view/main/#/share2d?id=5f87a68fb48f8d0057b63d0e'
-          }
-        }
+        // {
+        //   name: '验权页面',
+        //   path: 'auth/mainpage',
+        //   meta: {
+        //     icon: 'file-ppt',
+        //     authority: {
+        //       permission: 'form',
+        //       role: 'manager'
+        //     },
+        //     component: () => import('@/pages/mainpage')
+        //   }
+        // },
+        // {
+        //   name: '安冷科技官网',
+        //   path: 'anleng',
+        //   meta: {
+        //     icon: 'home',
+        //     link: 'http://www.anleng-tec.com/'
+        //   }
+        // },
       ]
     },
     {

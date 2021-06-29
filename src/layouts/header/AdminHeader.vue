@@ -37,14 +37,13 @@
       </div>
       <!-- 顶部条,右侧的内容 -->
       <div :class="['admin-header-right', headerTheme]">
-        <!-- 帮助文档 -->
-        <a-tooltip class="header-item" title="帮助文档" placement="bottom">
+        <!-- <a-tooltip class="header-item" title="帮助文档" placement="bottom">
           <a href="https://iczer.gitee.io/vue-antd-admin-docs/" target="_blank">
             <a-icon type="question-circle-o" />
           </a>
-        </a-tooltip>
+        </a-tooltip> -->
         <!-- ant design 文档 -->
-        <a-tooltip
+        <!-- <a-tooltip
           class="header-item"
           title="ant design文档"
           placement="bottom"
@@ -55,13 +54,13 @@
           >
             <a-icon type="meh" />
           </a>
-        </a-tooltip>
+        </a-tooltip> -->
 
-        <a-tooltip class="header-item" title="模板工程" placement="bottom">
+        <!-- <a-tooltip class="header-item" title="模板工程" placement="bottom">
           <a href="https://iczer.gitee.io/vue-antd-admin/" target="_blank">
             <a-icon type="fire" />
           </a>
-        </a-tooltip>
+        </a-tooltip> -->
         <span>{{ time_now }}</span>
         <!-- 提示 -->
         <header-notice class="header-item" />
