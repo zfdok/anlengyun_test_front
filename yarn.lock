@@ -2407,6 +2407,13 @@
   "resolved" "https://registry.npm.taobao.org/binary-extensions/download/binary-extensions-2.1.0.tgz?cache=0&sync_timestamp=1593261283449&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fbinary-extensions%2Fdownload%2Fbinary-extensions-2.1.0.tgz"
   "version" "2.1.0"
 
+"bindings@^1.5.0":
+  "integrity" "sha1-EDU8npRTNLwFEabZCzj7x8nFBN8="
+  "resolved" "https://registry.npm.taobao.org/bindings/download/bindings-1.5.0.tgz"
+  "version" "1.5.0"
+  dependencies:
+    "file-uri-to-path" "1.0.0"
+
 "bluebird@^3.1.1", "bluebird@^3.5.5":
   "integrity" "sha1-nyKcFb4nJFT/qXOs4NvueaGww28="
   "resolved" "https://registry.npm.taobao.org/bluebird/download/bluebird-3.7.2.tgz"
@@ -4299,6 +4306,11 @@
   dependencies:
     "minimatch" "^3.0.4"
 
+"downloadjs@^1.4.7":
+  "integrity" "sha1-9p+W+UDg0FU9rCkROYZaPNAQHjw="
+  "resolved" "https://registry.npm.taobao.org/downloadjs/download/downloadjs-1.4.7.tgz"
+  "version" "1.4.7"
+
 "duplexer@^0.1.1":
   "integrity" "sha1-Or5DrvODX4rgd9E23c4PJ2sEAOY="
   "resolved" "https://registry.npm.taobao.org/duplexer/download/duplexer-0.1.2.tgz"
@@ -4958,6 +4970,11 @@
     "loader-utils" "^1.0.2"
     "schema-utils" "^1.0.0"
 
+"file-uri-to-path@1.0.0":
+  "integrity" "sha1-VTp7hEb/b2hDWcRF8eN6BdrMM90="
+  "resolved" "https://registry.npm.taobao.org/file-uri-to-path/download/file-uri-to-path-1.0.0.tgz"
+  "version" "1.0.0"
+
 "filename-reserved-regex@^1.0.0":
   "integrity" "sha1-5hz4BfDeHJhFZ9A4bcXfUO5a9+Q="
   "resolved" "https://registry.npm.taobao.org/filename-reserved-regex/download/filename-reserved-regex-1.0.0.tgz"
@@ -5217,6 +5234,14 @@
   "integrity" "sha1-FQStJSMVjKpA20onh8sBQRmU6k8="
   "resolved" "https://registry.npm.taobao.org/fs.realpath/download/fs.realpath-1.0.0.tgz"
   "version" "1.0.0"
+
+"fsevents@^1.2.7":
+  "integrity" "sha1-8yXLBFVZJCi88Rs4M3DvcOO/zDg="
+  "resolved" "https://registry.npm.taobao.org/fsevents/download/fsevents-1.2.13.tgz?cache=0&sync_timestamp=1612536409579&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffsevents%2Fdownload%2Ffsevents-1.2.13.tgz"
+  "version" "1.2.13"
+  dependencies:
+    "bindings" "^1.5.0"
+    "nan" "^2.12.1"
 
 "fsevents@~2.1.2":
   "integrity" "sha1-+3OHA66NL5/pAMM4Nt3r7ouX8j4="
@@ -7214,6 +7239,11 @@
     "any-promise" "^1.0.0"
     "object-assign" "^4.0.1"
     "thenify-all" "^1.0.0"
+
+"nan@^2.12.1":
+  "integrity" "sha1-9TdkAGlRaPTMaUrJOT0MlYXu6hk="
+  "resolved" "https://registry.npm.taobao.org/nan/download/nan-2.14.2.tgz"
+  "version" "2.14.2"
 
 "nanomatch@^1.2.9":
   "integrity" "sha1-uHqKpPwN6P5r6IiVs4mD/yZb0Rk="
@@ -10472,6 +10502,13 @@
   "integrity" "sha1-ud0Jihfh9a25G9+WEfA4UxDafLE="
   "resolved" "https://registry.npm.taobao.org/vue-i18n/download/vue-i18n-8.22.1.tgz?cache=0&sync_timestamp=1603123178178&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fvue-i18n%2Fdownload%2Fvue-i18n-8.22.1.tgz"
   "version" "8.22.1"
+
+"vue-json-excel@^0.3.0":
+  "integrity" "sha1-csvkoARyAlntxlVVo/ByGYz3kUY="
+  "resolved" "https://registry.npm.taobao.org/vue-json-excel/download/vue-json-excel-0.3.0.tgz"
+  "version" "0.3.0"
+  dependencies:
+    "downloadjs" "^1.4.7"
 
 "vue-loader-v16@npm:vue-loader@^16.0.0-beta.7":
   "integrity" "sha1-nB8WhOLQHIpyIW+dTbEZ4VxiJkU="

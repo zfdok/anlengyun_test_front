@@ -17,4 +17,7 @@ module.exports = {
   ONENET_GET_DEVICE: `${BASE_URL}/onenet/get_device`,
   ONENET_GET_USER_DEVICE_LIST: `${BASE_URL}/onenet/get_user_devicelist`,
   ONENET_GET_DEVICE_HISTORY: `${BASE_URL}/onenet/get_device_history`,
+  ONENET_GET_DEVICE_DESIRED: `${BASE_URL}/onenet/get_device_desired`,
+  ONENET_SET_DEVICE_NAME: `${BASE_URL}/onenet/set_device_name`,
+  ONENET_SET_DEVICE_DESIRED: `${BASE_URL}/onenet/set_device_desired`,
 }

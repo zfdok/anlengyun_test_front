@@ -2,7 +2,7 @@
   <div>
     <h2 style="text-align: center">设备历史记录</h2>
     <a-row>
-      <a-col :span="10">
+      <a-col :span="7">
         <a-range-picker
           style="margin-left: 3rem"
           :show-time="{ format: 'HH:mm' }"
@@ -14,7 +14,18 @@
           >历史查询</a-button
         >
       </a-col>
-
+      <a-col :span="2">
+        <div class="hello">
+          <download-excel
+            :data="json_data"
+            :fields="json_fields"
+            worksheet="导出数据"
+            :name="excelname"
+          >
+            <a-button type="primary" @click="mkexcel">导出数据</a-button>
+          </download-excel>
+        </div>
+      </a-col>
       <a-col :span="6">
         <span
           >近
@@ -34,7 +45,7 @@
           ></span
         >
       </a-col>
-      <a-col :span="8">
+      <a-col :span="7">
         <a-button style="margin-left: 1rem" type="primary" @click="query1days"
           >最近一天数据查询</a-button
         >
@@ -45,23 +56,6 @@
           >最近一周数据查询</a-button
         >
       </a-col>
-      <!-- <a-col :span="8">
-        <span
-          >近
-          <a-input-number
-            id="inputNumber"
-            v-model="queryitems"
-            :min="10"
-            :max="100"
-            :step="10"
-            @change="onQueryHoursChange"
-          />
-          条
-          <a-button style="margin-left: 1rem" type="primary" @click="onOK"
-            >数据查询</a-button
-          ></span
-        >
-      </a-col> -->
     </a-row>
     <a-row>
       <a-col :span="12">
@@ -72,6 +66,52 @@
       </a-col>
     </a-row>
     <a-row>
+      <a-col :span="12">
+        <div
+          class="map-container"
+          style="
+            width: 100%;
+            height: 42rem;
+            padding: 0.5rem;
+            margin: 1rem;
+            background-color: #eee;
+          "
+        >
+          <baidu-map
+            style="width: 100%; height: 42rem"
+            :scroll-wheel-zoom="true"
+            mapType="BMAP_NORMAL_MAP"
+            :center="
+              map_path[0] != undefined
+                ? map_path[0]
+                : { lng: last_le, lat: last_ln }
+            "
+            :zoom="13"
+            ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
+          >
+            <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
+            <bm-navigation
+              anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
+              type="BMAP_NAVIGATION_CONTROL_LARGE"
+            ></bm-navigation>
+            <bm-map-type
+              :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
+              anchor="BMAP_ANCHOR_TOP_LEFT"
+            ></bm-map-type>
+            <bm-marker
+              :position="{ lng: last_le, lat: last_ln }"
+              animation="BMAP_ANIMATION_BOUNCE"
+            >
+            </bm-marker>
+            <bm-polyline
+              :path="map_path"
+              stroke-color="blue"
+              :stroke-opacity="0.5"
+              :stroke-weight="8"
+            ></bm-polyline>
+          </baidu-map>
+        </div>
+      </a-col>
       <a-col :span="12">
         <a-card :hoverable="true" style="margin: 1rem">
           <a-table :columns="columns" :data-source="datas">
@@ -141,53 +181,14 @@
           </a-table>
         </a-card>
       </a-col>
-      <a-col :span="12">
-        <div
-          class="map-container"
-          style="
-            width: 100%;
-            height: 42rem;
-            padding: 0.5rem;
-            margin: 1rem;
-            background-color: #eee;
-          "
-        >
-          <baidu-map
-            style="width: 100%; height: 42rem"
-            :scroll-wheel-zoom="true"
-            mapType="BMAP_NORMAL_MAP"
-            :center="
-              map_path[0] != undefined
-                ? map_path[0]
-                : { lng: last_le, lat: last_ln }
-            "
-            :zoom="13"
-            ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
-          >
-            <bm-scale anchor="BMAP_ANCHOR_TOP_RIGHT"></bm-scale>
-            <bm-navigation
-              anchor="BMAP_ANCHOR_BOTTOM_RIGHT"
-              type="BMAP_NAVIGATION_CONTROL_LARGE"
-            ></bm-navigation>
-            <bm-map-type
-              :map-types="['BMAP_NORMAL_MAP', 'BMAP_HYBRID_MAP']"
-              anchor="BMAP_ANCHOR_TOP_LEFT"
-            ></bm-map-type>
-            <bm-marker
-              :position="{ lng: last_le, lat: last_ln }"
-              animation="BMAP_ANIMATION_BOUNCE"
-            >
-            </bm-marker>
-            <bm-polyline
-              :path="map_path"
-              stroke-color="blue"
-              :stroke-opacity="0.5"
-              :stroke-weight="8"
-            ></bm-polyline>
-          </baidu-map>
-        </div>
-      </a-col>
     </a-row>
+    {{ chart_datas }}
+    <h2>map_path:{{ map_path }}</h2>
+    <h2>datas:{{ datas }}</h2>
+    {{ temp_device_history }}
+    {{ temp_device_history }}
+    {{ temp_device_history }}
+    {{ temp_device_history }}
   </div>
 </template>
 
@@ -281,6 +282,15 @@ export default {
       queryitems: 30,
       session_selected: {},
       session_user: {},
+      excelname: "datas",
+      json_fields: {
+        //表头设计
+        时间: "timeText",
+        温度: "temp",
+        湿度: "humi",
+        经纬度: "location",
+      },
+      json_data: [],
     };
   },
   mounted() {
@@ -394,7 +404,8 @@ export default {
       let datas = [];
       if (this.datas.length) {
         this.datas.forEach((data) => {
-          datas.push({ lng: data.position[0], lat: data.position[1] });
+          if (data.position[0])
+            datas.push({ lng: data.position[0], lat: data.position[1] });
         });
       }
       if (datas.length) {
@@ -410,7 +421,6 @@ export default {
       this.start_time = timestamp - 3600 * 1000 * value;
       this.end_time = timestamp;
     },
-    lineupdate() {},
     //获取温度基础方法
     async get_temp_history(end_time, timespan, identifier, limit, offset) {
       return new Promise((resolve) => {
@@ -714,6 +724,46 @@ export default {
       this.start_time = timestamp - 3600 * 1000 * this.queryhours;
       this.end_time = timestamp;
       this.onOK();
+    },
+    mkexcel() {
+      console.log(this.datas);
+      // this.excelname =
+      //   this.datas[this.datas.length - 1]["timeText"] +
+      //   "到" +
+      //   this.datas[0]["timeText"];
+      var temp_start_time = new Date(this.start_time);
+      var temp_end_time = new Date(this.end_time);
+      this.excelname =
+        temp_start_time.getFullYear() +
+        "/" +
+        (temp_start_time.getMonth() + 1) +
+        "/" +
+        temp_start_time.getDate() +
+        "/" +
+        temp_start_time.getHours() +
+        "时" +
+        temp_start_time.getMinutes() +
+        "分到" +
+        temp_end_time.getFullYear() +
+        "/" +
+        (temp_end_time.getMonth() + 1) +
+        "/" +
+        temp_end_time.getDate() +
+        "/" +
+        temp_end_time.getHours() +
+        "时" +
+        temp_end_time.getMinutes() +
+        "分";
+      this.datas.forEach((data, index) => {
+        console.log(data, index);
+        var exceljson_data = {
+          timeText: data["timeText"],
+          temp: data["temp"],
+          humi: data["humi"],
+          location: data["location"],
+        };
+        this.json_data.push(exceljson_data);
+      });
     },
   },
 };

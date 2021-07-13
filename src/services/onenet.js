@@ -5,8 +5,12 @@ import {
   ONENET_GET_DEVICE_LATEST,
   ONENET_GET_DEVICE,
   ONENET_GET_USER_DEVICE_LIST,
+  ONENET_GET_DEVICE_DESIRED,
+  ONENET_SET_DEVICE_NAME,
+  ONENET_GET_DEVICE_HISTORY,
+  ONENET_SET_DEVICE_DESIRED,
 } from '@/services/api'
-import { ONENET_GET_DEVICE_HISTORY } from './api'
+// import {  } from './api'
 
 
 export async function onenet_get_project_info(params) {
@@ -32,6 +36,18 @@ export async function get_device_history(params) {
   return request(ONENET_GET_DEVICE_HISTORY, METHOD.GET, params)
 }
 
+export async function get_device_desired(params) {
+  return request(ONENET_GET_DEVICE_DESIRED, METHOD.GET, params)
+}
+
+export async function set_device_desired(params) {
+  return request(ONENET_SET_DEVICE_DESIRED, METHOD.GET, params)
+}
+
+export async function set_device_name(params) {
+  return request(ONENET_SET_DEVICE_NAME, METHOD.GET, params)
+}
+
 export default {
   onenet_get_project_info,
   onenet_get_user_project_info,
@@ -39,4 +55,7 @@ export default {
   get_device,
   get_user_devicelist,
   get_device_history,
+  get_device_desired,
+  set_device_desired,
+  set_device_name,
 }

@@ -35,9 +35,10 @@
               >
                 <bm-marker
                   :position="{ lng: item.le, lat: item.ln }"
-                  animation="BMAP_ANIMATION_BOUNCE">
+                  animation="BMAP_ANIMATION_BOUNCE"
+                >
                   <bm-label
-                    :content="'东经'+item.le+',北纬'+item.ln"
+                    :content="'东经' + item.le + ',北纬' + item.ln"
                     :labelStyle="{ color: 'darkblue', fontSize: '14px' }"
                     :offset="{ width: -50, height: 28 }"
                   />
@@ -46,6 +47,9 @@
             </div>
             <div v-else>暂无位置信息</div>
           </a-col>
+          <!-- <a-col :span="24">
+            <a-button type="primary">设置</a-button>
+             </a-col> -->
         </a-row>
       </template>
       <a-card
@@ -75,6 +79,46 @@
           <a-tag color="#16a085" v-if="item.status == 2">在线</a-tag>
           <a-tag color="#c0392b" v-if="item.status == 3">离线</a-tag>
           <a-tag color="#57606f" v-if="item.status == 1">未激活</a-tag>
+          <a-button size="small" @click.stop="getSettings"
+            >设置<a-icon type="setting"
+          /></a-button>
+          <a-modal
+            :title="item.name + item.id"
+            :visible="setingVisible"
+            :confirm-loading="confirmLoading"
+            ok-text="设置"
+            @ok="setinghandleOk"
+            @cancel="setinghandleCancel"
+          >
+            <div>
+              <a-form
+                :form="item"
+                :label-col="{ span: 5 }"
+                :wrapper-col="{ span: 12 }"
+              >
+                <a-form-item label="设备名称">
+                  <a-input v-model="item.changeName" />
+                </a-form-item>
+                <a-form-item label="采集周期">
+                  <a-input-number v-model="item.period" :min="1" :max="1440" />
+                </a-form-item>
+                <a-form-item label="报警开关">
+                  <a-switch
+                    checked-children="开"
+                    un-checked-children="关"
+                    default-checked
+                    v-model="item.temp_alarm"
+                  />
+                </a-form-item>
+                <a-form-item label="温度上限">
+                  <a-input v-model="item.tempU" />
+                </a-form-item>
+                <a-form-item label="温度下限">
+                  <a-input v-model="item.tempL" />
+                </a-form-item>
+              </a-form>
+            </div>
+          </a-modal>
         </div>
         <div
           style="
@@ -93,13 +137,15 @@
 </template>
 
 <script>
-import {
-  BaiduMap,
-  BmMarker,
-  BmLabel,
-} from "vue-baidu-map";
+import { BaiduMap, BmMarker, BmLabel } from "vue-baidu-map";
 import { mapState, mapMutations } from "vuex";
-import { get_device, get_device_latest } from "@/services/onenet";
+import {
+  get_device,
+  get_device_latest,
+  get_device_desired,
+  set_device_desired,
+  set_device_name,
+} from "@/services/onenet";
 export default {
   name: "Pd_card",
   components: {
@@ -112,6 +158,7 @@ export default {
       item: {
         id: this.show_item.device_name,
         name: "undefined",
+        changeName: "",
         type: "zx",
         temp: 0.0,
         humi: 0.0,
@@ -121,8 +168,14 @@ export default {
         timeinfo: "",
         product_id: "",
         last_time: "",
+        temp_alarm: false,
+        tempU: 40,
+        tempL: -40,
+        period: 5,
       },
-      item2 : this.show_item,
+      item2: this.show_item,
+      setingVisible: false,
+      confirmLoading: false,
     };
   },
   props: {
@@ -242,9 +295,60 @@ export default {
     },
     toDevicedetailPage() {
       this.set_selected(this.item);
-      sessionStorage.setItem('session_selected',JSON.stringify(this.item))
-      sessionStorage.setItem('session_user',JSON.stringify(this.user))
+      sessionStorage.setItem("session_selected", JSON.stringify(this.item));
+      sessionStorage.setItem("session_user", JSON.stringify(this.user));
       this.$router.push({ path: "/device", query: { device: this.item } });
+    },
+    async getSettings() {
+      this.item.changeName = this.item.name;
+      this.setingVisible = true;
+      let rsp = await get_device_desired({
+        user: this.user.name,
+        type: this.item.type,
+        device_name: this.show_item.device_name,
+      });
+      if (rsp.data) {
+        this.item.temp_alarm = rsp.data.temp_alarm.value;
+        this.item.tempL = rsp.data.tempL.value;
+        this.item.tempU = rsp.data.tempU.value;
+        this.item.period = rsp.data.period.value;
+      }
+    },
+    async setinghandleOk() {
+      this.confirmLoading = true;
+      console.log(this.item.changeName);
+      console.log(this.item.temp_alarm);
+      console.log(this.item.tempU);
+      console.log(this.item.tempL);
+      console.log(this.item.period);
+      let rsp = await set_device_name({
+        user: this.user.name,
+        type: this.item.type,
+        device_name: this.show_item.device_name,
+        name: this.item.changeName,
+      });
+      console.log("rsp");
+      console.log(rsp);
+      if (rsp.data.success) {
+        this.item.name = this.item.changeName;
+      }
+
+      let rsp2 = await set_device_desired({
+        user: this.user.name,
+        type: this.item.type,
+        device_name: this.show_item.device_name,
+        temp_alarm: this.item.temp_alarm,
+        tempU: this.item.tempU,
+        tempL: this.item.tempL,
+        period: this.item.period,
+      });
+      console.log("rsp2");
+      console.log(rsp2);
+      this.setingVisible = false;
+      this.confirmLoading = false;
+    },
+    setinghandleCancel() {
+      this.setingVisible = false;
     },
   },
 };
