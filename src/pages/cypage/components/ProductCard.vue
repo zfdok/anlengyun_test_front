@@ -90,6 +90,8 @@ export default {
         message: "提示",
         description: "数据每分钟自动刷新, 如有需要可按F5手动刷新",
         icon: <a-icon type="smile" style="color: #108ee9" />,
+        placement: "topLeft",
+        duration: 2,
       });
       this.timer1 = setInterval(() => {
         if (this.$route.path == "/cypage") {

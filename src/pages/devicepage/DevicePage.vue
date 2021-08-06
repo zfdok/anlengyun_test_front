@@ -182,13 +182,13 @@
         </a-card>
       </a-col>
     </a-row>
-    {{ chart_datas }}
+    <!-- {{ chart_datas }}
     <h2>map_path:{{ map_path }}</h2>
     <h2>datas:{{ datas }}</h2>
     {{ temp_device_history }}
     {{ temp_device_history }}
     {{ temp_device_history }}
-    {{ temp_device_history }}
+    {{ temp_device_history }} -->
   </div>
 </template>
 

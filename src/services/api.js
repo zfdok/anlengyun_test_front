@@ -9,7 +9,7 @@ module.exports = {
   //headernotice
   HEADERNOTICE: `${BASE_URL}/headernotice`,
   READNOTICE: `${BASE_URL}/headernotice/readnotice`,
-  GET_AD: `${BASE_URL}/headernotice/getad`,
+  FIRSTSHOW_READED: `${BASE_URL}/headernotice/firstshow_readed`,
   //onenet
   ONENET_GET_PROJECT_INFO: `${BASE_URL}/onenet/get_project_info`,
   ONENET_GET_USER_PROJECT_INFO: `${BASE_URL}/onenet/get_user_project_info`,
