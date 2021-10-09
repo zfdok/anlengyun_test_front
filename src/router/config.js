@@ -54,6 +54,26 @@ const options = {
           component: () => import('@/pages/gsppage')
         },
         {
+          path: 'datacenter',
+          name: '数据中心',
+          meta: {
+            icon: 'bar-chart',
+          },
+          component: BlankView,
+          children: [
+            {
+              path: 'verification_report_request',
+              name: '验证报告申请',
+              component: () => import('@/pages/reportapply')
+            },
+            {
+              path: 'verification_report',
+              name: '验证报告交付',
+              component: () => import('@/pages/blankpage')
+            }
+          ]
+        },
+        {
           path: 'accountmgr',
           name: '账户管理',
           meta: {
@@ -145,36 +165,7 @@ const options = {
             }
           ]
         },
-        {
-          path: 'datacenter',
-          name: '数据中心',
-          meta: {
-            icon: 'bar-chart',
-          },
-          component: BlankView,
-          children: [
-            {
-              path: 'search',
-              name: '数据查询',
-              component: () => import('@/pages/blankpage')
-            },
-            {
-              path: 'statistics',
-              name: '统计报表',
-              component: () => import('@/pages/blankpage')
-            },
-            {
-              path: 'verification_report_request',
-              name: '验证报告申请',
-              component: () => import('@/pages/blankpage')
-            },
-            {
-              path: 'verification_report',
-              name: '验证报告交付',
-              component: () => import('@/pages/blankpage')
-            }
-          ]
-        },
+
         {
           path: 'service',
           name: '客户服务',
@@ -183,32 +174,31 @@ const options = {
           },
           component: () => import('@/pages/blankpage')
         },
-        // {
-        //   name: '验权页面',
-        //   path: 'auth/mainpage',
-        //   meta: {
-        //     icon: 'file-ppt',
-        //     authority: {
-        //       permission: 'form',
-        //       role: 'manager'
-        //     },
-        //     component: () => import('@/pages/mainpage')
-        //   }
-        // },
-        // {
-        //   name: '安冷科技官网',
-        //   path: 'anleng',
-        //   meta: {
-        //     icon: 'home',
-        //     link: 'http://www.anleng-tec.com/'
-        //   }
-        // },
       ]
     },
     {
       path: '/device',
       name: '设备页',
       component: () => import('@/pages/devicepage')
+    },
+    {
+      path: '/device2',
+      name: '设备页2',
+      component: () => import('@/pages/devicepage2')
+    }, {
+      path: '/devicehistory',
+      name: '设备页history',
+      component: () => import('@/pages/devicepagehistory')
+    },
+    {
+      path: '/datacenter/reportpage',
+      name: '报告页',
+      component: () => import('@/pages/reportpage')
+    },
+    {
+      path: '/datacenter/reportPDF',
+      name: '报告PDF页',
+      component: () => import('@/pages/reportPDF')
     },
   ]
 }

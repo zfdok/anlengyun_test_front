@@ -85,6 +85,7 @@ export default {
   },
   created() {
     this.update_product_card_info();
+    sessionStorage.setItem("session_user", JSON.stringify(this.user));
     if (!this.isMobile) {
       this.$notification.open({
         message: "提示",

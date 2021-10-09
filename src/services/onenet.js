@@ -5,6 +5,7 @@ import {
   ONENET_GET_DEVICE_LATEST,
   ONENET_GET_DEVICE,
   ONENET_GET_USER_DEVICE_LIST,
+  ONENET_GET_USER_DEVICE_LIST_BY_TYPE,
   ONENET_GET_DEVICE_DESIRED,
   ONENET_SET_DEVICE_NAME,
   ONENET_GET_DEVICE_HISTORY,
@@ -27,10 +28,14 @@ export async function get_device(params) {
   return request(ONENET_GET_DEVICE, METHOD.GET, params)
 }
 
-
 export async function get_user_devicelist(params) {
   return request(ONENET_GET_USER_DEVICE_LIST, METHOD.GET, params)
 }
+
+export async function get_user_devicelist_by_type(params) {
+  return request(ONENET_GET_USER_DEVICE_LIST_BY_TYPE, METHOD.GET, params)
+}
+
 
 export async function get_device_history(params) {
   return request(ONENET_GET_DEVICE_HISTORY, METHOD.GET, params)

@@ -1185,9 +1185,9 @@
     "@types/node" "*"
 
 "@types/json-schema@^7.0.5":
-  "integrity" "sha1-9MfsQ+gbMZqYFRFQMXCfJph4kfA="
-  "resolved" "https://registry.npm.taobao.org/@types/json-schema/download/@types/json-schema-7.0.6.tgz"
-  "version" "7.0.6"
+  "integrity" "sha1-l+3JA36gw4WFMgsolk3eOznkZg0="
+  "resolved" "https://registry.nlark.com/@types/json-schema/download/@types/json-schema-7.0.9.tgz"
+  "version" "7.0.9"
 
 "@types/lodash@*":
   "integrity" "sha1-dNVdlHRS4t4HQrrWUnBDO2Ooww8="

@@ -309,9 +309,6 @@ export default {
     var timestamp = new Date().valueOf();
     this.start_time = timestamp - 3600 * 1000 * 3;
     this.end_time = timestamp;
-    // this.get_datas(this.start_time, this.end_time).then(() => {
-    //   this.mapvisible = true;
-    // });
   },
   watch: {
     $route(to, from) {
@@ -727,10 +724,6 @@ export default {
     },
     mkexcel() {
       console.log(this.datas);
-      // this.excelname =
-      //   this.datas[this.datas.length - 1]["timeText"] +
-      //   "到" +
-      //   this.datas[0]["timeText"];
       var temp_start_time = new Date(this.start_time);
       var temp_end_time = new Date(this.end_time);
       this.excelname =
