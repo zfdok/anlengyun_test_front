@@ -93,14 +93,12 @@ export default {
   },
   methods: {
     async getDeviceRecList() {
-      // console.log(this.device_selected);
       let res = await get_device_history_list({
         user: this.session_user.name,
         type: this.session_selected.product_id,
         device: this.session_selected.id,
       });
       this.rec_list = res.data;
-      console.log(res);
     },
     toDevicedetailPage() {
       this.$router.push({ path: "/device" });
@@ -108,7 +106,6 @@ export default {
     get_rec(rec) {
       rec.product_id = this.session_selected.product_id;
       sessionStorage.setItem("session_history_selected", JSON.stringify(rec));
-      console.log(rec);
       setTimeout(() => {
         this.$router.push({ path: "/devicehistory" });
       }, 100);

@@ -142,6 +142,7 @@ import { mapState, mapMutations } from "vuex";
 import {
   get_device,
   get_device_latest,
+  get_device_latest_lbs,
   get_device_desired,
   set_device_desired,
   set_device_name,
@@ -268,30 +269,37 @@ export default {
         });
     },
     //获取设备数据点
-    card_get_device_latest() {
+    async card_get_device_latest() {
       // 获取数据点
-      get_device_latest({
+      let result = await get_device_latest({
         user: this.user.name,
         type: this.item.type,
         device_name: this.show_item.device_name,
-      })
-        .then((result) => {
-          let revdatas = JSON.parse(result.data.msg.body).data.list;
-          revdatas.forEach((datapoint) => {
-            if (datapoint.identifier == "temp") {
-              this.item.temp = datapoint.value != "" ? datapoint.value : "--";
-            } else if (datapoint.identifier == "humi") {
-              this.item.humi = datapoint.value != "" ? datapoint.value : "--";
-            } else if (datapoint.identifier == "le") {
-              this.item.le = datapoint.value != "" ? datapoint.value : "0";
-            } else if (datapoint.identifier == "ln") {
-              this.item.ln = datapoint.value != "" ? datapoint.value : "0";
-            }
-          });
-        })
-        .catch((err) => {
-          console.log(err);
+      });
+      let revdatas = JSON.parse(result.data.msg.body).data.list;
+      revdatas.forEach((datapoint) => {
+        if (datapoint.identifier == "temp") {
+          this.item.temp = datapoint.value != "" ? datapoint.value : "--";
+        } else if (datapoint.identifier == "humi") {
+          this.item.humi = datapoint.value != "" ? datapoint.value : "--";
+        } else if (datapoint.identifier == "le") {
+          this.item.le = datapoint.value != "" ? datapoint.value : "0";
+        } else if (datapoint.identifier == "ln") {
+          this.item.ln = datapoint.value != "" ? datapoint.value : "0";
+        }
+      });
+      if (this.item.type == "zx") {
+        let res = await get_device_latest_lbs({
+          user: this.user.name,
+          type: this.item.type,
+          device_name: this.show_item.device_name,
         });
+        let lbs_data = JSON.parse(res.data.msg);
+        if (lbs_data.msg == "success") {
+          this.item.le = parseInt(lbs_data.data.lon*10000)/10000;
+          this.item.ln = parseInt(lbs_data.data.lat*10000)/10000;
+        }
+      }
     },
     toDevicedetailPage() {
       this.set_selected(this.item);

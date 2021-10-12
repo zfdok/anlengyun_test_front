@@ -2,19 +2,24 @@
   <div>
     <h2 style="text-align: center">设备历史记录</h2>
     <a-row>
-      <a-col :span="7">
+      <a-col :span="isMobile ? 18 : 7">
         <a-range-picker
-          style="margin-left: 3rem"
+          :style="isMobile ? 'width:100%' : 'margin-left: 3rem'"
           :show-time="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           :placeholder="['开始时间', '结束时间']"
           @ok="onDateSelOk"
         />
-        <a-button style="margin-left: 1rem" type="primary" @click="onOK"
-          >历史查询</a-button
-        >
       </a-col>
-      <a-col :span="2">
+      <a-col :span="isMobile ? 6 : 2">
+        <a-button
+          type="primary"
+          :style="isMobile ? 'margin-bottom : 0.5rem' : ''"
+          @click="onOK"
+          >历史查询</a-button
+        ></a-col
+      >
+      <a-col :span="isMobile ? 0 : 2">
         <div class="hello">
           <download-excel
             :data="json_data"
@@ -26,47 +31,61 @@
           </download-excel>
         </div>
       </a-col>
-      <a-col :span="6">
-        <span
-          >近
-          <a-input-number
-            id="inputNumber"
-            v-model="queryhours"
-            :min="1"
-            :max="48"
-            @change="onQueryHoursChange"
-          />
-          小时
-          <a-button
-            style="margin-left: 1rem"
-            type="primary"
-            @click="queryByHours"
-            >数据查询</a-button
-          ></span
-        >
+
+      <a-col :span="isMobile ? 24 : 6">
+        <a-row>
+          <a-col :span="18" :style="{ textAlign: 'center' }"
+            ><span
+              >近
+              <a-input-number
+                id="inputNumber"
+                v-model="queryhours"
+                :min="1"
+                :max="48"
+                @change="onQueryHoursChange"
+              />
+              小时
+            </span></a-col
+          >
+          <a-col :span="6"
+            ><a-button
+              type="primary"
+              @click="queryByHours"
+              :style="isMobile ? 'margin-bottom : 0.5rem' : ''"
+              >数据查询</a-button
+            ></a-col
+          >
+        </a-row>
       </a-col>
-      <a-col :span="7">
-        <a-button style="margin-left: 1rem" type="primary" @click="query1days"
+      <a-col :span="isMobile ? 24 : 2">
+        <a-button type="primary" :block="isMobile" @click="query1days"
           >最近一天数据查询</a-button
         >
-        <a-button style="margin-left: 1rem" type="primary" @click="query3days"
+      </a-col>
+      <a-col :span="isMobile ? 24 : 2">
+        <a-button
+          :style="{ backgroundColor: '#b4d5fa' }"
+          :block="isMobile"
+          @click="query3days"
           >最近三天数据查询</a-button
         >
-        <a-button style="margin-left: 1rem" type="primary" @click="query7days"
+      </a-col>
+      <a-col :span="isMobile ? 24 : 2">
+        <a-button type="primary" :block="isMobile" @click="query7days"
           >最近一周数据查询</a-button
         >
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="12">
+      <a-col :span="isMobile ? 24 : 12">
         <div id="myChart" :style="{ height: '300px' }"></div>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="isMobile ? 24 : 12">
         <div id="myChart2" :style="{ height: '300px' }"></div>
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="12">
+      <a-col :span="isMobile ? 24 : 12">
         <div
           class="map-container"
           style="
@@ -112,9 +131,12 @@
           </baidu-map>
         </div>
       </a-col>
-      <a-col :span="12">
+      <a-col :span="isMobile ? 24 : 12">
         <a-card :hoverable="true" style="margin: 1rem">
-          <a-table :columns="columns" :data-source="datas">
+          <a-table
+            :columns="isMobile ? mobile_columns : columns"
+            :data-source="datas"
+          >
             <span slot="action" slot-scope="record"
               ><a-popover>
                 <template slot="title">
@@ -182,13 +204,8 @@
         </a-card>
       </a-col>
     </a-row>
-    <!-- {{ chart_datas }}
-    <h2>map_path:{{ map_path }}</h2>
-    <h2>datas:{{ datas }}</h2>
-    {{ temp_device_history }}
-    {{ temp_device_history }}
-    {{ temp_device_history }}
-    {{ temp_device_history }} -->
+    <!-- <h2>{{ datas }}</h2> -->
+    <!-- <h2>{{map_path}}</h2> -->
   </div>
 </template>
 
@@ -237,6 +254,20 @@ const columns = [
     scopedSlots: { customRender: "action" },
   },
 ];
+const mobile_columns = [
+  {
+    title: "温度(℃)",
+    dataIndex: "temp",
+    key: "temp",
+  },
+  {
+    title: "操作",
+    key: "operation",
+    fixed: "right",
+    width: 100,
+    scopedSlots: { customRender: "action" },
+  },
+];
 function timestampToTime(timestamp) {
   var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
   var Y = date.getFullYear() + "-";
@@ -252,6 +283,7 @@ function timestampToTime(timestamp) {
 }
 // import { mapState } from "vuex";
 import { get_device_history } from "@/services/onenet";
+import { mapState } from "vuex";
 
 export default {
   components: {
@@ -265,6 +297,7 @@ export default {
   data() {
     return {
       columns, //列表展示项
+      mobile_columns,
       temp_device_history: {},
       temp_history_datas: [],
       humi_device_history: {},
@@ -294,12 +327,12 @@ export default {
     };
   },
   mounted() {
-    console.log("mounted");
+
     this.drawTemp();
     this.drawHumi();
   },
   created() {
-    console.log("created");
+
     this.session_selected = JSON.parse(
       sessionStorage.getItem("session_selected")
     );
@@ -312,18 +345,16 @@ export default {
   },
   watch: {
     $route(to, from) {
-      console.log(to);
-      console.log(from);
+
       if (to.path == "/device") {
         this.chart_datas = {};
         this.session_selected = JSON.parse(
           sessionStorage.getItem("session_selected")
         );
         this.session_user = JSON.parse(sessionStorage.getItem("session_user"));
-        console.log(this.session_selected);
       }
       if (from.path == "/device") {
-        console.log("OKdevice");
+        null
       }
     },
     chart_datas: function (v) {
@@ -340,6 +371,7 @@ export default {
     },
   },
   computed: {
+    ...mapState("setting", ["isMobile"]),
     datas() {
       let datas = [];
       if (this.temp_history_datas.length == this.humi_history_datas.length) {
@@ -455,7 +487,6 @@ export default {
           offset * 100
         );
         offset++;
-        // console.log(revdatas.length);
         this.temp_history_datas = this.temp_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
@@ -504,20 +535,15 @@ export default {
           offset * 100
         );
         offset++;
-        // console.log(revdatas.length);
         this.humi_history_datas = this.humi_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的湿度数据
     async get_humi_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        // console.log("to:", to);
-        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_humi_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      // console.log("to:", to);
-      // console.log("from:", from);
       this.get_humi_history_in_a_week(to, to - from);
     },
     //获取经度基础方法
@@ -555,20 +581,15 @@ export default {
           offset * 100
         );
         offset++;
-        // console.log(revdatas.length);
         this.le_history_datas = this.le_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的经度数据
     async get_le_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        // console.log("to:", to);
-        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_le_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      // console.log("to:", to);
-      // console.log("from:", from);
       this.get_le_history_in_a_week(to, to - from);
     },
     //获取纬度基础方法
@@ -606,20 +627,15 @@ export default {
           offset * 100
         );
         offset++;
-        // console.log(revdatas.length);
         this.ln_history_datas = this.ln_history_datas.concat(revdatas);
       } while (revdatas.length > 0);
     },
     //获取任意两个时间点间的纬度数据
     async get_ln_history_from_to(from, to) {
       while (to - from > 3600 * 1000 * 24 * 7) {
-        // console.log("to:", to);
-        // console.log("from:", to - 3600 * 1000 * 24 * 7);
         this.get_ln_history_in_a_week(to, 3600 * 1000 * 24 * 7);
         to = to - 3600 * 1000 * 24 * 7;
       }
-      // console.log("to:", to);
-      // console.log("from:", from);
       this.get_ln_history_in_a_week(to, to - from);
     },
     //整理datas
@@ -631,7 +647,6 @@ export default {
       await this.get_ln_history_from_to(form, to);
     },
     onDateSelOk(value) {
-      // console.log("onOk: ", value);
       let start_time = new Date(value[0]._d).getTime();
       let end_time = new Date(value[1]._d).getTime();
       this.start_time = start_time;
@@ -650,9 +665,6 @@ export default {
       this.get_datas(this.start_time, this.end_time).then(() => {
         this.mapvisible = true;
       });
-    },
-    getDataDetails(value) {
-      console.log("haha", value);
     },
     drawTemp() {
       // 基于准备好的dom，初始化echarts实例
@@ -723,7 +735,6 @@ export default {
       this.onOK();
     },
     mkexcel() {
-      console.log(this.datas);
       var temp_start_time = new Date(this.start_time);
       var temp_end_time = new Date(this.end_time);
       this.excelname =
@@ -747,8 +758,7 @@ export default {
         "时" +
         temp_end_time.getMinutes() +
         "分";
-      this.datas.forEach((data, index) => {
-        console.log(data, index);
+      this.datas.forEach((data) => {
         var exceljson_data = {
           timeText: data["timeText"],
           temp: data["temp"],

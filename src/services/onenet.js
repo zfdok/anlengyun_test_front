@@ -3,6 +3,7 @@ import {
   ONENET_GET_PROJECT_INFO,
   ONENET_GET_USER_PROJECT_INFO,
   ONENET_GET_DEVICE_LATEST,
+  ONENET_GET_DEVICE_LATEST_LBS,
   ONENET_GET_DEVICE,
   ONENET_GET_USER_DEVICE_LIST,
   ONENET_GET_USER_DEVICE_LIST_BY_TYPE,
@@ -24,6 +25,11 @@ export async function onenet_get_user_project_info(params) {
 export async function get_device_latest(params) {
   return request(ONENET_GET_DEVICE_LATEST, METHOD.GET, params)
 }
+
+export async function get_device_latest_lbs(params) {
+  return request(ONENET_GET_DEVICE_LATEST_LBS, METHOD.GET, params)
+}
+
 export async function get_device(params) {
   return request(ONENET_GET_DEVICE, METHOD.GET, params)
 }
