@@ -7,7 +7,7 @@ module.exports = {
   LOGIN: `${BASE_URL}/user/login`,
   ROUTES: `${BASE_URL}/routes`,
   //headernotice
-  HEADERNOTICE: `${BASE_URL}/headernotice`,
+  HEADERNOTICE: `${BASE_URL}/headernotice/getnotice`,
   READNOTICE: `${BASE_URL}/headernotice/readnotice`,
   FIRSTSHOW_READED: `${BASE_URL}/headernotice/firstshow_readed`,
   //onenet

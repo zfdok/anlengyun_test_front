@@ -255,6 +255,8 @@ export default {
     },
     clearAllNotice() {
       this.msg_data.forEach((msg) => {
+        console.log(msg);
+        console.log(msg.msg_id);
         if (msg.type != "notice") {
           read_notice({
             index: msg.msg_id,
@@ -264,6 +266,9 @@ export default {
       this.msg_data = [];
       this.unreaded_count = 0;
       this.$notification.destroy();
+      setTimeout(()=>{
+        this.get_notice();
+      },3000)
     },
   },
 };

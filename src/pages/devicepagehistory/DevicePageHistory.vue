@@ -302,7 +302,7 @@ export default {
         start_time: this.history_selected.start_time,
         last_time: this.history_selected.last_time,
       });
-      this.history_datas = res.data;
+      this.history_datas = res.data.data;
       for (var i = 0; i < res.data.length; i++) {
         this.history_datas[
           i

@@ -1,13 +1,11 @@
 <template>
   <div>
     <a-row type="flex" justify="end">
-      <a-affix :offset-top="10">
         <a-col :span="24">
           <a-button type="primary" @click="toDevicedetailPage"
             >切换至时间模式</a-button
           >
         </a-col>
-      </a-affix>
     </a-row>
     <a-row>
       <a-col
@@ -98,7 +96,7 @@ export default {
         type: this.session_selected.product_id,
         device: this.session_selected.id,
       });
-      this.rec_list = res.data;
+      this.rec_list = res.data.data;
     },
     toDevicedetailPage() {
       this.$router.push({ path: "/device" });

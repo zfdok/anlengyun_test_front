@@ -104,7 +104,7 @@ export default {
     afterLogin(res) {
       this.logging = false //1. 取消加载中状态
       const loginRes = res.data //2. 获取请求返回的数据
-      if (loginRes.code >= 0) { //3. 如果code>=0 证明登录成功
+      if (loginRes.code >= 0 && loginRes.code < 400) { //3. 如果code>=0 证明登录成功
         const {user, permissions, roles} = loginRes.data //4.从返回数据中解析 用户,权限,角色
         this.setUser(user) //5.设置用户
         this.setPermissions(permissions) //5.设置权限

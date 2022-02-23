@@ -194,7 +194,7 @@ export default {
       let style = {};
       let now_date = new Date();
       let last_time = new Date(this.item.last_time);
-      if (this.show_item.status == 2 || now_date - last_time < 300000) {
+      if (this.show_item.status == 2 || now_date - last_time < 420000) {
         style["background-color"] = "#05c46b";
       } else if (this.show_item.status == 3) {
         style["background-color"] = "#ff5e57";
@@ -239,13 +239,13 @@ export default {
         device_name: this.show_item.device_name,
       })
         .then((result) => {
-          let temp = JSON.parse(result.data.msg.body);
+          let temp = result.data;
           this.item.product_id = temp.data.product_id;
           this.item.last_time = temp.data.last_time;
           this.item.name = temp.data.desc == "" ? "未名设备" : temp.data.desc;
           let now_date = new Date();
           let last_time = new Date(this.item.last_time);
-          if (temp.data.status == 2 || now_date - last_time < 300000) {
+          if (temp.data.status == 2 || now_date - last_time < 420000) {
             this.item.status = 2;
           } else {
             this.item.status = temp.data.status;
@@ -276,7 +276,8 @@ export default {
         type: this.item.type,
         device_name: this.show_item.device_name,
       });
-      let revdatas = JSON.parse(result.data.msg.body).data.list;
+
+      let revdatas = result.data.data.list;
       revdatas.forEach((datapoint) => {
         if (datapoint.identifier == "temp") {
           this.item.temp = datapoint.value != "" ? datapoint.value : "--";
@@ -294,10 +295,10 @@ export default {
           type: this.item.type,
           device_name: this.show_item.device_name,
         });
-        let lbs_data = JSON.parse(res.data.msg);
-        if (lbs_data.msg == "success") {
-          this.item.le = parseInt(lbs_data.data.lon*10000)/10000;
-          this.item.ln = parseInt(lbs_data.data.lat*10000)/10000;
+        let lbs_data = res.data;
+        if (lbs_data.code == 200) {
+          this.item.le = parseInt(lbs_data.data.lon * 10000) / 10000;
+          this.item.ln = parseInt(lbs_data.data.lat * 10000) / 10000;
         }
       }
     },
@@ -315,11 +316,11 @@ export default {
         type: this.item.type,
         device_name: this.show_item.device_name,
       });
-      if (rsp.data) {
-        this.item.temp_alarm = rsp.data.temp_alarm.value;
-        this.item.tempL = rsp.data.tempL.value;
-        this.item.tempU = rsp.data.tempU.value;
-        this.item.period = rsp.data.period.value;
+      if (rsp.data.code == 200) {
+        this.item.temp_alarm = rsp.data.data.temp_alarm.value;
+        this.item.tempL = rsp.data.data.tempL.value;
+        this.item.tempU = rsp.data.data.tempU.value;
+        this.item.period = rsp.data.data.period.value;
       }
     },
     async setinghandleOk() {
@@ -340,7 +341,8 @@ export default {
       if (rsp.data.success) {
         this.item.name = this.item.changeName;
       }
-
+      console.log("this.show_item.device_name,");
+      console.log(this.show_item.device_name,);
       let rsp2 = await set_device_desired({
         user: this.user.name,
         type: this.item.type,

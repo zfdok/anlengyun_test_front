@@ -84,9 +84,7 @@ import {
   onenet_get_project_info,
   get_user_devicelist_by_type,
 } from "@/services/onenet";
-import {
-  get_device_history_list,
-} from "@/services/history";
+import { get_device_history_list } from "@/services/history";
 import { mapState, mapMutations } from "vuex";
 export default {
   data() {
@@ -127,7 +125,7 @@ export default {
             user: this.user.name,
             type: pro._id,
           });
-          this.device_list = JSON.parse(res.data.msg.body).data.list;
+          this.device_list = res.data.data.list;
           this.device_loading = false;
           this.device_selected.device_name = "";
           this.btn_query_disabled = true;
@@ -144,17 +142,17 @@ export default {
     },
     //获取设备记录列表
     async getDeviceRecList() {
-      // console.log(this.device_selected);
+      console.log(this.device_selected);
       let res = await get_device_history_list({
         user: this.user.name,
         type: this.device_selected.product_id,
         device: this.device_selected.device_name,
       });
-      this.rec_list = res.data;
+      console.log(res);
+      this.rec_list = res.data.data;
     },
     get_rec(rec) {
-
-      rec.product_id = this.device_selected.product_id
+      rec.product_id = this.device_selected.product_id;
       this.set_report_selected(rec);
       sessionStorage.setItem("session_report_selected", JSON.stringify(rec));
       this.$router.push({ path: "/datacenter/reportpage" });
