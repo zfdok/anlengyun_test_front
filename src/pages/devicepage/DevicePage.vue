@@ -1,17 +1,49 @@
 <template>
   <div>
-    <h2 style="text-align: center">设备历史记录</h2>
+    <div class="headbar">
+      <a-row type="flex" justify="end">
+        <a-col style="color: #eee" :span="2">
+          <a-button type="link" style="color: #eee" @click="toHomePage">
+            <a-icon type="home" style="color: #eee"></a-icon>返回主页
+          </a-button>
+        </a-col>
+        <a-col style="color: #eee" :span="11"> </a-col>
+        <a-col style="color: #eee" :span="4">
+          <a-button type="link" @click="toReportPage"
+            >去验证报告中心(导出PDF)</a-button
+          >
+        </a-col>
+        <a-col style="color: #eee" :span="3">
+          <download-excel
+            :data="json_data"
+            :fields="json_fields"
+            worksheet="导出数据"
+            :name="excelname"
+          >
+            <a-button type="link" @click="mkexcel">导出数据至excel</a-button>
+          </download-excel>
+        </a-col>
+        <a-col style="color: #eee" :span="4">
+          当前模式: 时间模式
+          <a-button type="link" @click="toDevicedetailPage2"
+            >切换至业务模式</a-button
+          >
+        </a-col>
+      </a-row>
+    </div>
+    <h2 style="text-align: center; font-weight: bold">设备历史记录</h2>
     <a-row>
-      <a-col :span="isMobile ? 18 : 7">
+      <a-col class="lscx" :span="isMobile ? 18 : 7">
         <a-range-picker
           :style="isMobile ? 'width:100%' : 'margin-left: 3rem'"
           :show-time="{ format: 'HH:mm' }"
           format="YYYY-MM-DD HH:mm"
           :placeholder="['开始时间', '结束时间']"
           @ok="onDateSelOk"
+          :disabled-date="disabledDate"
         />
       </a-col>
-      <a-col :span="isMobile ? 6 : 2">
+      <a-col class="xscx" :span="isMobile ? 6 : 1">
         <a-button
           type="primary"
           :style="isMobile ? 'margin-bottom : 0.5rem' : ''"
@@ -19,50 +51,13 @@
           >历史查询</a-button
         ></a-col
       >
-      <a-col :span="isMobile ? 0 : 2">
-        <div class="hello">
-          <download-excel
-            :data="json_data"
-            :fields="json_fields"
-            worksheet="导出数据"
-            :name="excelname"
-          >
-            <a-button type="primary" @click="mkexcel">导出数据</a-button>
-          </download-excel>
-        </div>
-      </a-col>
-
-      <a-col :span="isMobile ? 24 : 6">
-        <a-row>
-          <a-col :span="18" :style="{ textAlign: 'center' }"
-            ><span
-              >近
-              <a-input-number
-                id="inputNumber"
-                v-model="queryhours"
-                :min="1"
-                :max="48"
-                @change="onQueryHoursChange"
-              />
-              小时
-            </span></a-col
-          >
-          <a-col :span="6"
-            ><a-button
-              type="primary"
-              @click="queryByHours"
-              :style="isMobile ? 'margin-bottom : 0.5rem' : ''"
-              >数据查询</a-button
-            ></a-col
-          >
-        </a-row>
-      </a-col>
-      <a-col :span="isMobile ? 24 : 2">
+      <a-col class="atcx" :span="isMobile ? 24 : 6"> </a-col>
+      <a-col :span="isMobile ? 24 : 3">
         <a-button type="primary" :block="isMobile" @click="query1days"
           >最近一天数据查询</a-button
         >
       </a-col>
-      <a-col :span="isMobile ? 24 : 2">
+      <a-col :span="isMobile ? 24 : 3">
         <a-button
           :style="{ backgroundColor: '#b4d5fa' }"
           :block="isMobile"
@@ -70,21 +65,59 @@
           >最近三天数据查询</a-button
         >
       </a-col>
-      <a-col :span="isMobile ? 24 : 2">
+      <a-col :span="isMobile ? 24 : 3">
         <a-button type="primary" :block="isMobile" @click="query7days"
           >最近一周数据查询</a-button
         >
       </a-col>
     </a-row>
     <a-row>
-      <a-col :span="isMobile ? 24 : 12">
+      <a-col class="charts_box" :span="isMobile ? 24 : 12">
         <div id="myChart" :style="{ height: '300px' }"></div>
+        <div class="tools_bar">
+          <a-input-number
+            id="inputNumber"
+            v-model="queryhours"
+            :min="1"
+            :max="168"
+            size="small"
+            @change="onQueryHoursChange"
+          />
+          <a-button
+            class="tools_bar_btn"
+            type="primary"
+            shape="circle"
+            icon="left"
+            size="small"
+            :disabled="!btn_backward"
+            @click="btn_changetime(0)"
+          />
+          <a-button
+            class="tools_bar_btn"
+            type="primary"
+            shape="circle"
+            icon="right"
+            size="small"
+            :disabled="!btn_forward"
+            @click="btn_changetime(1)"
+          />
+          <a-button
+            class="tools_bar_btn"
+            type="primary"
+            shape="circle"
+            size="small"
+            :disabled="!btn_toend"
+            @click="btn_changetoend"
+            ><a-icon type="vertical-left"
+          /></a-button>
+        </div>
       </a-col>
       <a-col :span="isMobile ? 24 : 12">
         <div id="myChart2" :style="{ height: '300px' }"></div>
       </a-col>
     </a-row>
-    <a-row>
+    <a-row class="map_data">
+      <!-- 地图 -->
       <a-col :span="isMobile ? 24 : 12">
         <div
           class="map-container"
@@ -100,11 +133,7 @@
             style="width: 100%; height: 42rem"
             :scroll-wheel-zoom="true"
             mapType="BMAP_NORMAL_MAP"
-            :center="
-              map_path[0] != undefined
-                ? map_path[0]
-                : { lng: last_le, lat: last_ln }
-            "
+            :center="{ lng: last_le, lat: last_ln }"
             :zoom="13"
             ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
           >
@@ -131,11 +160,12 @@
           </baidu-map>
         </div>
       </a-col>
+      <!-- 数据表 -->
       <a-col :span="isMobile ? 24 : 12">
         <a-card :hoverable="true" style="margin: 1rem">
           <a-table
             :columns="isMobile ? mobile_columns : columns"
-            :data-source="datas"
+            :data-source="history_datas"
           >
             <span slot="action" slot-scope="record"
               ><a-popover>
@@ -155,7 +185,7 @@
                   <p style="width: 20rem; font-weight: bold">
                     <a-tag color="red" style="font: 1em sans-serif"
                       >上传时间:</a-tag
-                    >{{ record.timeText }}
+                    >{{ record.timestamp }}
                   </p>
                   <p style="font-weight: bold">
                     <a-tag color="blue" style="font: 1em sans-serif"
@@ -170,9 +200,7 @@
                   <p style="font-weight: bold">
                     <a-tag color="purple" style="font: 1em sans-serif"
                       >历史位置:</a-tag
-                    >东经:{{ record.position[0] }}°，北纬:{{
-                      record.position[1]
-                    }}°
+                    >东经:{{ record.le }}°，北纬:{{ record.ln }}°
                   </p>
                   <div class="map-container" style="height: 15rem">
                     <baidu-map
@@ -180,16 +208,16 @@
                       :scroll-wheel-zoom="true"
                       mapType="BMAP_NORMAL_MAP"
                       :center="{
-                        lng: record.position[0],
-                        lat: record.position[1],
+                        lng: record.le,
+                        lat: record.ln,
                       }"
                       :zoom="13"
                       ak="kb7cVym4jgEbuVs5EG6vPFer5vXNkpB1"
                     >
                       <bm-marker
                         :position="{
-                          lng: record.position[0],
-                          lat: record.position[1],
+                          lng: record.le,
+                          lat: record.ln,
                         }"
                         animation="BMAP_ANIMATION_BOUNCE"
                       >
@@ -204,12 +232,20 @@
         </a-card>
       </a-col>
     </a-row>
-    <!-- <h2>{{ datas }}</h2> -->
-    <!-- <h2>{{map_path}}</h2> -->
+    <!-- ???????? -->
+    <div class="loading_scene" v-if="data_loading">
+      <a-spin />
+      <span style="color: #eee; margin-left: 20px; font-size: 24px"
+        >加载中...</span
+      >
+    </div>
   </div>
 </template>
 
 <script>
+import { mapState } from "vuex";
+import moment from "moment";
+import { get_device_historys_by_time } from "@/services/history";
 import {
   BaiduMap,
   BmNavigation,
@@ -227,8 +263,8 @@ const columns = [
   },
   {
     title: "上传时间",
-    dataIndex: "timeText",
-    key: "timeText",
+    dataIndex: "timestamp",
+    key: "timestamp",
     width: 200,
   },
   {
@@ -268,23 +304,6 @@ const mobile_columns = [
     scopedSlots: { customRender: "action" },
   },
 ];
-function timestampToTime(timestamp) {
-  var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-  var Y = date.getFullYear() + "-";
-  var M =
-    (date.getMonth() + 1 < 10
-      ? "0" + (date.getMonth() + 1)
-      : date.getMonth() + 1) + "-";
-  var D = date.getDate() + " ";
-  var h = date.getHours() + ":";
-  var m = date.getMinutes() + ":";
-  var s = date.getSeconds();
-  return Y + M + D + h + m + s;
-}
-// import { mapState } from "vuex";
-import { get_device_history } from "@/services/onenet";
-import { mapState } from "vuex";
-
 export default {
   components: {
     BaiduMap,
@@ -296,26 +315,20 @@ export default {
   },
   data() {
     return {
-      columns, //列表展示项
+      columns,
       mobile_columns,
-      temp_device_history: {},
-      temp_history_datas: [],
-      humi_device_history: {},
-      humi_history_datas: [],
-      le_device_history: {},
-      le_history_datas: [],
-      ln_device_history: {},
-      ln_history_datas: [],
-      mapvisible: false,
-      last_le: 0,
-      last_ln: 0,
+      datas: [],
+      chart_datas: [],
+      map_path: [],
+      history_datas: [],
       start_time: 0,
       end_time: 0,
-      queryhours: 3,
-      queryitems: 30,
+      last_le: 0,
+      last_ln: 0,
+      data_loading: false,
       session_selected: {},
-      session_user: {},
-      excelname: "datas",
+      json_data: [],
+      queryhours: 3,
       json_fields: {
         //表头设计
         时间: "timeText",
@@ -323,16 +336,13 @@ export default {
         湿度: "humi",
         经纬度: "location",
       },
-      json_data: [],
+      excelname: "datas",
+      btn_forward: false,
+      btn_backward: true,
+      btn_toend: false,
     };
   },
-  mounted() {
-
-    this.drawTemp();
-    this.drawHumi();
-  },
   created() {
-
     this.session_selected = JSON.parse(
       sessionStorage.getItem("session_selected")
     );
@@ -342,330 +352,143 @@ export default {
     var timestamp = new Date().valueOf();
     this.start_time = timestamp - 3600 * 1000 * 3;
     this.end_time = timestamp;
+    this.onOK();
   },
   watch: {
-    $route(to, from) {
-
-      if (to.path == "/device") {
-        this.chart_datas = {};
-        this.session_selected = JSON.parse(
-          sessionStorage.getItem("session_selected")
-        );
-        this.session_user = JSON.parse(sessionStorage.getItem("session_user"));
-      }
-      if (from.path == "/device") {
-        null
-      }
-    },
-    chart_datas: function (v) {
+    datas: function (v) {
       typeof v;
+      let temp_data_list = [];
+      let temp_path_list = [];
+      v.forEach((data) => {
+        temp_data_list.push([data.timestamp, data.temp, data.humi]);
+        temp_path_list.push({ lng: data.le, lat: data.ln });
+      });
+      this.chart_datas = temp_data_list;
+      this.map_path = temp_path_list;
+      this.history_datas = JSON.parse(JSON.stringify(v)).reverse();
       this.drawTemp();
       this.drawHumi();
-    },
-    session_selected: function () {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * 3;
-      this.end_time = timestamp;
-      this.chart_datas = {};
-      this.onOK();
     },
   },
   computed: {
     ...mapState("setting", ["isMobile"]),
-    datas() {
-      let datas = [];
-      if (this.temp_history_datas.length == this.humi_history_datas.length) {
-        for (let index = 0; index < this.temp_history_datas.length; index++) {
-          datas.push({
-            key: 0,
-            timeText: "",
-            temp: 0,
-            humi: 0,
-            location: "",
-            position: [],
-          });
-        }
-        this.temp_history_datas.forEach((data, index) => {
-          datas[index].key = index;
-          datas[index].timeText = timestampToTime(parseInt(data.time));
-          datas[index].temp = data.value;
-        });
-        this.humi_history_datas.forEach((data, index) => {
-          datas[index].humi = data.value;
-        });
-        this.le_history_datas.forEach((data, index) => {
-          if (datas[index] != undefined) {
-            datas[index].location = data.value;
-            datas[index].position = [parseFloat(data.value)];
-          }
-        });
-        this.ln_history_datas.forEach((data, index) => {
-          if (datas[index] != undefined) {
-            datas[index].location = datas[index].location + "," + data.value;
-            datas[index].position[1] = parseFloat(data.value);
-          }
-        });
-      }
-      return datas;
-    },
-    chart_datas: {
-      get: function () {
-        let datas = [];
-        if (this.temp_history_datas.length == this.humi_history_datas.length) {
-          for (let index = 0; index < this.temp_history_datas.length; index++) {
-            datas.push([]);
-          }
-          this.temp_history_datas.forEach((data, index) => {
-            datas[index].push(timestampToTime(parseInt(data.time)));
-            datas[index].push(parseFloat(data.value));
-          });
-          this.humi_history_datas.forEach((data, index) => {
-            datas[index].push(parseFloat(data.value));
-          });
-        }
-        return datas.reverse();
-      },
-      set: function (datas) {
-        return datas;
-      },
-    },
-    map_path() {
-      let datas = [];
-      if (this.datas.length) {
-        this.datas.forEach((data) => {
-          if (data.position[0])
-            datas.push({ lng: data.position[0], lat: data.position[1] });
-        });
-      }
-      if (datas.length) {
-        return datas;
-      } else {
-        return [];
-      }
-    },
   },
   methods: {
+    ////////////////////////////////////路由相关//////////////////////////////////////////
+    //返回主页
+    toHomePage() {
+      this.$router.replace({ path: "/mainpage" });
+    },
+    //返回业务模式
+    toDevicedetailPage2() {
+      this.$router.push({ path: "/device2" });
+    },
+    toReportPage() {
+      this.$router.replace({ path: "/datacenter/verification_report_request" });
+    },
+    ////////////////////////////////////组件相关//////////////////////////////////////////
+    //限定日期范围
+    disabledDate(current) {
+      return current > moment().endOf("day");
+    },
     onQueryHoursChange(value) {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * value;
-      this.end_time = timestamp;
+      this.start_time = this.end_time - 3600 * 1000 * value;
+      this.onOK();
     },
-    //获取温度基础方法
-    async get_temp_history(end_time, timespan, identifier, limit, offset) {
-      return new Promise((resolve) => {
-        get_device_history({
-          user: this.session_user.name,
-          type: this.session_selected["type"],
-          device_name: this.session_selected["id"],
-          start_time: end_time - timespan,
-          end_time,
-          identifier,
-          offset,
-          limit,
-        })
-          .then((result) => {
-            this.temp_device_history = JSON.parse(
-              result.data.msg.body
-            ).data.list;
-            resolve(JSON.parse(result.data.msg.body).data.list);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    },
-    //获取最大一周内的温度
-    async get_temp_history_in_a_week(end_time, timespan) {
-      let offset = 0;
-      let revdatas = [];
-      do {
-        revdatas = await this.get_temp_history(
-          end_time,
-          timespan,
-          "temp",
-          100,
-          offset * 100
-        );
-        offset++;
-        this.temp_history_datas = this.temp_history_datas.concat(revdatas);
-      } while (revdatas.length > 0);
-    },
-    //获取任意两个时间点间的温度数据
-    async get_temp_history_from_to(from, to) {
-      while (to - from > 3600 * 1000 * 24 * 7) {
-        this.get_temp_history_in_a_week(to, 3600 * 1000 * 24 * 7);
-        to = to - 3600 * 1000 * 24 * 7;
-      }
-      this.get_temp_history_in_a_week(to, to - from);
-    },
-    //获取湿度基础方法
-    async get_humi_history(end_time, timespan, identifier, limit, offset) {
-      return new Promise((resolve) => {
-        get_device_history({
-          user: this.session_user.name,
-          type: this.session_selected["type"],
-          device_name: this.session_selected["id"],
-          start_time: end_time - timespan,
-          end_time,
-          identifier,
-          offset,
-          limit,
-        })
-          .then((result) => {
-            this.humi_device_history = JSON.parse(
-              result.data.msg.body
-            ).data.list;
-            resolve(JSON.parse(result.data.msg.body).data.list);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    },
-    //获取最大一周内的湿度
-    async get_humi_history_in_a_week(end_time, timespan) {
-      let offset = 0;
-      let revdatas = [];
-      do {
-        revdatas = await this.get_humi_history(
-          end_time,
-          timespan,
-          "humi",
-          100,
-          offset * 100
-        );
-        offset++;
-        this.humi_history_datas = this.humi_history_datas.concat(revdatas);
-      } while (revdatas.length > 0);
-    },
-    //获取任意两个时间点间的湿度数据
-    async get_humi_history_from_to(from, to) {
-      while (to - from > 3600 * 1000 * 24 * 7) {
-        this.get_humi_history_in_a_week(to, 3600 * 1000 * 24 * 7);
-        to = to - 3600 * 1000 * 24 * 7;
-      }
-      this.get_humi_history_in_a_week(to, to - from);
-    },
-    //获取经度基础方法
-    async get_le_history(end_time, timespan, identifier, limit, offset) {
-      return new Promise((resolve) => {
-        get_device_history({
-          user: this.session_user.name,
-          type: this.session_selected["type"],
-          device_name: this.session_selected["id"],
-          start_time: end_time - timespan,
-          end_time,
-          identifier,
-          offset,
-          limit,
-        })
-          .then((result) => {
-            this.le_device_history = JSON.parse(result.data.msg.body).data.list;
-            resolve(JSON.parse(result.data.msg.body).data.list);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    },
-    //获取最大一周内的经度
-    async get_le_history_in_a_week(end_time, timespan) {
-      let offset = 0;
-      let revdatas = [];
-      do {
-        revdatas = await this.get_le_history(
-          end_time,
-          timespan,
-          "le",
-          100,
-          offset * 100
-        );
-        offset++;
-        this.le_history_datas = this.le_history_datas.concat(revdatas);
-      } while (revdatas.length > 0);
-    },
-    //获取任意两个时间点间的经度数据
-    async get_le_history_from_to(from, to) {
-      while (to - from > 3600 * 1000 * 24 * 7) {
-        this.get_le_history_in_a_week(to, 3600 * 1000 * 24 * 7);
-        to = to - 3600 * 1000 * 24 * 7;
-      }
-      this.get_le_history_in_a_week(to, to - from);
-    },
-    //获取纬度基础方法
-    async get_ln_history(end_time, timespan, identifier, limit, offset) {
-      return new Promise((resolve) => {
-        get_device_history({
-          user: this.session_user.name,
-          type: this.session_selected["type"],
-          device_name: this.session_selected["id"],
-          start_time: end_time - timespan,
-          end_time,
-          identifier,
-          offset,
-          limit,
-        })
-          .then((result) => {
-            this.ln_device_history = JSON.parse(result.data.msg.body).data.list;
-            resolve(JSON.parse(result.data.msg.body).data.list);
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      });
-    },
-    //获取最大一周内的纬度
-    async get_ln_history_in_a_week(end_time, timespan) {
-      let offset = 0;
-      let revdatas = [];
-      do {
-        revdatas = await this.get_ln_history(
-          end_time,
-          timespan,
-          "ln",
-          100,
-          offset * 100
-        );
-        offset++;
-        this.ln_history_datas = this.ln_history_datas.concat(revdatas);
-      } while (revdatas.length > 0);
-    },
-    //获取任意两个时间点间的纬度数据
-    async get_ln_history_from_to(from, to) {
-      while (to - from > 3600 * 1000 * 24 * 7) {
-        this.get_ln_history_in_a_week(to, 3600 * 1000 * 24 * 7);
-        to = to - 3600 * 1000 * 24 * 7;
-      }
-      this.get_ln_history_in_a_week(to, to - from);
-    },
-    //整理datas
-    async get_datas(form, to) {
-      this.mapvisible = false;
-      await this.get_temp_history_from_to(form, to);
-      await this.get_humi_history_from_to(form, to);
-      await this.get_le_history_from_to(form, to);
-      await this.get_ln_history_from_to(form, to);
-    },
+    ////////////////////////////////////按钮动作相关//////////////////////////////////////////
+    //当日期选择器选好时执行
     onDateSelOk(value) {
       let start_time = new Date(value[0]._d).getTime();
       let end_time = new Date(value[1]._d).getTime();
       this.start_time = start_time;
       this.end_time = end_time;
     },
+    //当历史查询按钮被按下时
     async onOK() {
-      this.mapvisible = false;
-      this.temp_device_history = {};
-      this.temp_history_datas = [];
-      this.humi_device_history = {};
-      this.humi_history_datas = [];
-      this.le_device_history = {};
-      this.le_history_datas = [];
-      this.ln_device_history = {};
-      this.ln_history_datas = [];
-      this.get_datas(this.start_time, this.end_time).then(() => {
-        this.mapvisible = true;
-      });
+      if (this.end_time - this.start_time > 30 * 24 * 60 * 60000) {
+        this.$message.error("查询范围不得超过一个月");
+        return;
+      }
+      this.get_all_datas(this.start_time, this.end_time);
     },
+    // 数据查询按钮按下时
+    queryByHours() {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * this.queryhours;
+      this.end_time = timestamp;
+      this.onOK();
+    },
+    query1days() {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * 24;
+      this.end_time = timestamp;
+      this.queryhours = 24;
+      this.onOK();
+    },
+    query3days() {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * 24 * 3;
+      this.end_time = timestamp;
+      this.queryhours = 24 * 3;
+      this.onOK();
+    },
+    query7days() {
+      var timestamp = new Date().valueOf();
+      this.start_time = timestamp - 3600 * 1000 * 24 * 7;
+      this.end_time = timestamp;
+      this.queryhours = 24 * 7;
+      this.onOK();
+    },
+    btn_changetime(v) {
+      if (v) {
+        if (
+          this.end_time + 3600 * 1000 * this.queryhours <
+          new Date().valueOf()
+        ) {
+          this.end_time = this.end_time + 3600 * 1000 * this.queryhours;
+          this.start_time = this.start_time + 3600 * 1000 * this.queryhours;
+          this.onOK();
+        } else {
+          this.$message.warn("已经是最新数据");
+          this.btn_forward = false;
+        }
+      } else {
+        this.end_time = this.end_time - 3600 * 1000 * this.queryhours;
+        this.start_time = this.start_time - 3600 * 1000 * this.queryhours;
+        this.onOK();
+        this.btn_forward = true;
+        this.btn_toend = true;
+      }
+    },
+    btn_changetoend() {
+      this.end_time = new Date().valueOf();
+      this.start_time = this.end_time - 3600 * 1000 * this.queryhours;
+      this.btn_toend = false;
+      this.btn_forward = false;
+      this.onOK();
+    },
+    ////////////////////////////////////网络请求相关//////////////////////////////////////////
+    //获取所有的数据
+    async get_all_datas(form, to) {
+      this.data_loading = true;
+      let res = await get_device_historys_by_time({
+        type: this.session_selected["type"],
+        device_name: this.session_selected["id"],
+        start_time: form,
+        last_time: to,
+      });
+      let temp_datas = res.data.data;
+      temp_datas.forEach((temp_data, index) => {
+        temp_data.key = index;
+      });
+      this.datas = res.data.data;
+      this.last_le = this.datas[this.datas.length - 1].le;
+      this.last_ln = this.datas[this.datas.length - 1].ln;
+      setTimeout(() => {
+        this.data_loading = false;
+      }, 300);
+    },
+    ////////////////////////////////////图表/表格生成//////////////////////////////////////////
     drawTemp() {
       // 基于准备好的dom，初始化echarts实例
       let myChart = this.$echarts.init(document.getElementById("myChart"));
@@ -710,30 +533,6 @@ export default {
         ],
       });
     },
-    query1days() {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * 24;
-      this.end_time = timestamp;
-      this.onOK();
-    },
-    query3days() {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * 24 * 3;
-      this.end_time = timestamp;
-      this.onOK();
-    },
-    query7days() {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * 24 * 7;
-      this.end_time = timestamp;
-      this.onOK();
-    },
-    queryByHours() {
-      var timestamp = new Date().valueOf();
-      this.start_time = timestamp - 3600 * 1000 * this.queryhours;
-      this.end_time = timestamp;
-      this.onOK();
-    },
     mkexcel() {
       var temp_start_time = new Date(this.start_time);
       var temp_end_time = new Date(this.end_time);
@@ -773,4 +572,42 @@ export default {
 </script>
 
 <style>
+.headbar {
+  background-color: rgb(65, 65, 65);
+}
+.loading_scene {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 4px;
+  padding: 20%;
+  margin: 32px 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+}
+.tools_bar {
+  position: absolute;
+  right: 10%;
+  bottom: 21%;
+  background: #eee;
+  padding: 2px;
+  border-radius: 6px;
+}
+.tools_bar_btn {
+  margin: 5px;
+}
+.charts_box {
+  padding-left: 10px;
+}
+/* .map_data {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+} */
 </style>

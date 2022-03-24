@@ -1,23 +1,37 @@
 <template>
   <div>
-    <a-row type="flex" justify="end">
-      <a-affix :offset-top="10">
-        <a-col :span="24">
-          <div class="hello">
-            <download-excel
-              :data="json_data"
-              :fields="json_fields"
-              :header="excel_header"
-              worksheet="导出数据"
-              :name="excelname"
-            >
-              <a-button type="primary" v-if="isMobile" @click="mkexcel">导出excel数据</a-button>
-            </download-excel>
-          </div>
+    <div class="headbar">
+      <a-row type="flex" justify="end">
+        <a-col style="color: #eee" :span="2">
+          <a-button type="link" style="color: #eee" @click="toHomePage">
+            <a-icon type="home" style="color: #eee"></a-icon>返回主页
+          </a-button>
         </a-col>
-      </a-affix>
-    </a-row>
-    <h2 style="text-align: center">设备历史记录</h2>
+        <a-col style="color: #eee" :span="11"> </a-col>
+        <a-col style="color: #eee" :span="4">
+          <a-button type="link" @click="toReportPage"
+            >去验证报告中心(导出PDF)</a-button
+          >
+        </a-col>
+        <a-col style="color: #eee" :span="3">
+          <download-excel
+            :data="json_data"
+            :fields="json_fields"
+            worksheet="导出数据"
+            :name="excelname"
+          >
+            <a-button type="link" @click="mkexcel">导出数据至excel</a-button>
+          </download-excel>
+        </a-col>
+        <a-col style="color: #eee" :span="4">
+          当前模式: 业务模式
+          <a-button type="link" @click="toDevicedetailPage"
+            >切换至时间模式</a-button
+          >
+        </a-col>
+      </a-row>
+    </div>
+    <h2 style="text-align: center; font-weight: bold">设备历史记录</h2>
     <a-row>
       <a-col :span="isMobile ? 24 : 12">
         <div id="myChart" :style="{ height: '300px' }"></div>
@@ -75,7 +89,10 @@
       </a-col>
       <a-col :span="isMobile ? 24 : 12">
         <a-card :hoverable="true" style="margin: 1rem">
-          <a-table :columns="isMobile ? mobile_columns:columns" :data-source="history_datas">
+          <a-table
+            :columns="isMobile ? mobile_columns : columns"
+            :data-source="history_datas"
+          >
             <span slot="action" slot-scope="record"
               ><a-popover>
                 <template slot="title">
@@ -145,7 +162,7 @@
 </template>
 
 <script>
-import { get_device_history } from "@/services/history";
+import { get_device_historys } from "@/services/history";
 import {
   BaiduMap,
   BmNavigation,
@@ -240,7 +257,6 @@ export default {
     );
   },
   mounted() {
-
     this.history_selected = JSON.parse(
       sessionStorage.getItem("session_history_selected")
     );
@@ -295,7 +311,7 @@ export default {
   },
   methods: {
     async get_history() {
-      let res = await get_device_history({
+      let res = await get_device_historys({
         type: this.history_selected.product_id,
         device: this.history_selected.device_name,
         id: this.history_selected.id,
@@ -370,9 +386,39 @@ export default {
         this.json_data.push(exceljson_data);
       });
     },
+    ////////////////////////////////////路由相关//////////////////////////////////////////
+    //返回主页
+    toHomePage() {
+      this.$router.replace({ path: "/mainpage" });
+    },
+    //返回业务模式
+    toDevicedetailPage() {
+      this.$router.push({ path: "/device" });
+    },
+    toReportPage() {
+      this.$router.replace({ path: "/datacenter/verification_report_request" });
+    },
   },
 };
 </script>
 
 <style>
+.headbar {
+  background-color: rgb(65, 65, 65);
+}
+.loading_scene {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.55);
+  border-radius: 4px;
+  padding: 20%;
+  margin: 32px 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9;
+  width: 100%;
+  height: 100%;
+}
 </style>
