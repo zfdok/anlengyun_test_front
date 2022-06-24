@@ -82,6 +82,7 @@
             :max="168"
             size="small"
             @change="onQueryHoursChange"
+            :disabled="!num_input_enable"
           />
           <a-button
             class="tools_bar_btn"
@@ -340,6 +341,7 @@ export default {
       btn_forward: false,
       btn_backward: true,
       btn_toend: false,
+      num_input_enable: true,
     };
   },
   created() {
@@ -392,6 +394,7 @@ export default {
       return current > moment().endOf("day");
     },
     onQueryHoursChange(value) {
+      this.num_input_enable = false;
       this.start_time = this.end_time - 3600 * 1000 * value;
       this.onOK();
     },
@@ -409,6 +412,8 @@ export default {
         this.$message.error("查询范围不得超过一个月");
         return;
       }
+      console.log(this.start_time);
+      console.log(this.end_time);
       this.get_all_datas(this.start_time, this.end_time);
     },
     // 数据查询按钮按下时
@@ -487,6 +492,7 @@ export default {
       setTimeout(() => {
         this.data_loading = false;
       }, 300);
+      this.num_input_enable = true;
     },
     ////////////////////////////////////图表/表格生成//////////////////////////////////////////
     drawTemp() {

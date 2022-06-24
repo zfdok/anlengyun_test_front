@@ -33,7 +33,7 @@
           </a-form-item>
           <a-form-item label="收货时间">
             <a-input
-              v-model="session_selected.start_time"
+              v-model="session_selected.last_time"
               read-only
               disabled
               size="small"
@@ -155,10 +155,11 @@
             <a-input v-model="session_selected.reciver_address" size="small" />
           </a-form-item>
 
-          <a-form-item  v-if="!isMobile" :wrapper-col="{ span: 12, offset: 5 }">
+          <a-form-item v-if="!isMobile" :wrapper-col="{ span: 24, offset: 5 }">
             <a-button
               type="primary"
               @click="info_add"
+              style="display: inline-block"
               :disabled="!info_add_done_flag"
             >
               确认信息
@@ -169,9 +170,14 @@
               @click="getpdf"
               :disabled="info_add_done_flag"
               :loading="gening"
+              style="display: inline-block"
             >
               生成监测报告
             </a-button>
+            <div style="display: inline-block" v-show="showpdfUrl.length != 0">
+              >>> 请下载:
+              <a :href="showpdfUrl">{{ showpdfUrl }}</a>
+            </div>
           </a-form-item>
 
           <a-form-item v-if="isMobile" :wrapper-col="{ span: 24, offset: 3 }">
@@ -183,14 +189,20 @@
               确认信息
             </a-button>
             >>>
-            <a-button>
-              发送报告至邮箱
-            </a-button>
+            <a-button> 发送报告至邮箱 </a-button>
           </a-form-item>
         </a-form>
       </a-col>
       <a-col :span="1"></a-col>
     </a-row>
+    <a-modal
+      :visible="download_flag"
+      title="请下载"
+      @ok="download_flag = false"
+      @cancel="download_flag = false"
+    >
+      <a :href="download_url">{{ download_url }}</a>
+    </a-modal>
   </div>
 </template>
 
@@ -213,6 +225,9 @@ export default {
         sm: { span: 12 },
       },
       pdfUrl: "",
+      showpdfUrl: "",
+      download_flag: false,
+      download_url: "",
     };
   },
   created() {
@@ -252,6 +267,12 @@ export default {
     async getpdf() {
       this.gening = true;
       let filename = `${this.session_selected.device_name}_${this.session_selected.id}`;
+      setTimeout(() => {
+        this.gening = false;
+        console.log("this.showpdfUrl");
+        console.log(this.showpdfUrl);
+        this.showpdfUrl = `https://anlengyun.com/report/${this.session_selected.device_name}_${this.session_selected.id}.pdf`;
+      }, 10000);
       let res = await gen_reports({
         name: filename,
         device_name: this.session_selected.device_name,
@@ -259,7 +280,10 @@ export default {
         start_time: this.session_selected.start_time,
         last_time: this.session_selected.last_time,
       });
-      if (res.data.success) {
+      console.log("res");
+      console.log(res);
+      this.download_url = res.data.data.url;
+      if (res.data.data.success) {
         this.$message.success("正在生成验证简报,请稍等~", 6);
         setTimeout(async () => {
           let res = await get_reports({
@@ -272,89 +296,25 @@ export default {
           });
           const elink = window.URL.createObjectURL(blob);
           this.pdfUrl = elink;
+          this.showpdfUrl = elink;
           sessionStorage.setItem("session_report_pdf", this.pdfUrl);
           URL.revokeObjectURL(elink.href);
 
           setTimeout(() => {
+            this.download_flag = true;
+            // this.download_url = res.data.data.url;
             this.gening = false;
             this.$router.push({
               path: "/datacenter/reportPDF",
               query: { url: this.pdfUrl },
             });
           }, 500);
-          // document.body.removeChild(elink);
-          // let routeData = this.$router.resolve({
-          //   path: "/datacenter/reportPDF",
-          //   query: { url: this.pdfUrl },
-          // });
-          // window.open(routeData.href, "_blank");
         }, 1000);
       } else {
         this.$message.error("本次记录数据量太小无法生成报告!", 6);
         this.gening = false;
       }
-      // setTimeout(async () => {
-      //   let res = await get_reports({
-      //     name: filename,
-      //   });
-      //   let page = window.open(res);
-      //   setTimeout(() => {
-      //     page.print(); //这一步就是在新窗口调出打印机
-      //   }, 500);
-      // }, 5000);
-
-      // if (res.data.success) {
-      //   this.$message.success("正在生成验证简报,请稍等~", 6)
-      //   setTimeout(() => {
-      //     this.previewDown(filename).then((v) => {
-      //       if (v.status == 200) {
-      //         if (!v) {
-      //           return;
-      //         } else {
-      //           const elink = document.createElement("a");
-      //           elink.href = window.URL.createObjectURL(
-      //             new Blob([v.data], { type: `application/pdf;charset=utf-8` })
-      //           );
-      //           elink.style.display = "none";
-      //           elink.setAttribute("download", `${filename}`);
-      //           document.body.appendChild(elink);
-      //           elink.click();
-      //           URL.revokeObjectURL(elink.href); // 释放URL 对象
-      //           document.body.removeChild(elink);
-      //           this.gening = false;
-      //         }
-      //       }
-      //     });
-      //   }, 2000);
-      // }else{
-      //   this.$message.error("本次记录数据量太小无法生成报告!", 6)
-      //   this.gening = false;
-      // }
     },
-    // previewDown(filename) {
-    //   return new Promise((resolve) => {
-    //     this.$axios({
-    //       url: `https://anlengyun.com:3000/history/get_report`,
-    //       timeout: 0,
-    //       method: "get",
-    //       responseType: "arraybuffer",
-    //       header: { "Content-Type": "multipart/form-data" },
-    //       params: {
-    //         name: filename,
-    //         device_name: this.session_selected.device_name,
-    //         type: "zx",
-    //         start_time: this.session_selected.start_time,
-    //         last_time: this.session_selected.last_time,
-    //       },
-    //     })
-    //       .then((res) => {
-    //         resolve(res);
-    //       })
-    //       .catch(() => {
-    //         resolve(false);
-    //       });
-    //   });
-    // },
   },
 };
 </script>
